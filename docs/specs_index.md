@@ -4,6 +4,6 @@
 
 |slug|task 清单|最后更新时间|
 |------|------|------|
-<!-- 示例行（实际项目使用时从真实 task 收尾开始填写；示例勿放表内，「在表即生效」）：
-|example_slug|t000|2026-07-21|
--->
+|front_matter_preserve|t001|2026-08-11|
+|unified_indent_width|t002|2026-08-11|
+|builtin_table_handling|t003|2026-08-12|

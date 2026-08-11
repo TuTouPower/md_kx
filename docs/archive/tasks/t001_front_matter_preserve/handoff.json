@@ -1,0 +1,19 @@
+{
+  "tid": "t001",
+  "attempt": 1,
+  "execution_id": "6ac71e873d774f71b90945eeee7708d9",
+  "status": "done",
+  "branch": "t001_front_matter_preserve",
+  "base_sha": "2586c5769c2e76c40010c1b6771922611f160b0d",
+  "tests": "pytest tests -q：4666 passed, 5 skipped",
+  "blackbox": "mdformat --check README.md 通过；CRLF stdin 黑盒验证通过",
+  "review": "Round 3 code PASS / test PASS",
+  "ac_evidence": {
+    "AC-001": ["tests/test_front_matter.py::test_front_matter_preserved_byte_for_byte 通过", "tests/test_front_matter.py::test_front_matter_crlf_preserved 通过", "tests/test_front_matter.py::test_file_crlf_end_of_line_keep 通过"],
+    "AC-002": ["tests/test_front_matter.py::test_body_formatted 通过"],
+    "AC-003": ["tests/test_front_matter.py::test_no_front_matter_unchanged 通过", "tests/test_front_matter.py::test_blank_separator_not_front_matter 通过"],
+    "AC-004": ["tests/test_front_matter.py::test_front_matter_content_not_formatted 通过"]
+  },
+  "pending": [],
+  "findings": ["d001"]
+}

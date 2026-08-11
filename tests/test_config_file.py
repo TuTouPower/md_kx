@@ -73,6 +73,8 @@ def test_invalid_toml(tmp_path, capsys):
         ("extensions", "extensions = 'gfm'"),
         ("codeformatters", "codeformatters = ['python', 1]"),
         ("extensions", "extensions = ['gfm', 1]"),
+        ("indent_width", "indent_width = 'abc'"),
+        ("indent_width", "indent_width = -1"),
     ],
 )
 def test_invalid_conf_value(bad_conf, conf_key, tmp_path, capsys):

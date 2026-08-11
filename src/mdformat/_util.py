@@ -34,6 +34,12 @@ def build_mdit(
     # store reference labels in link/image tokens
     mdit.options["store_labels"] = True
 
+    # Always enable the table rule so tables are parsed as tables rather
+    # than falling through to the paragraph pipeline (which would strip
+    # escaped pipes and break cell boundaries). The table renderer handles
+    # all three modes, including "none" (pass-through).
+    mdit.block.ruler.enable("table")
+
     mdit.options["parser_extension"] = []
     for name in extensions:
         plugin = mdformat.plugins.PARSER_EXTENSIONS[name]

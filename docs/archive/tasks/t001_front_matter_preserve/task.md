@@ -1,15 +1,15 @@
 ---
-tid: "t003"
-slug: "builtin_table_handling"
-title: "内置表格解析与三态表格处理"
-status: "backlog"
-branch: ""
+tid: "t001"
+slug: "front_matter_preserve"
+title: "支持 YAML front matter 识别但不格式化"
+status: "done"
+branch: "t001_front_matter_preserve"
 worktree: ""
 review_level: "full"
-diff_anchor: ""
+diff_anchor: "2586c5769c2e76c40010c1b6771922611f160b0d"
 depends_on: ""
 conflicts_with: ""
-note: "来自 pending p004；fork 二次开发需求 4"
+note: "来自 pending p001；fork 二次开发需求 1"
 ---
 
 # Task 过程总账
@@ -44,14 +44,20 @@ reviewer 标注为 spec 过时的 finding（实现合理但与 spec 描述不符
 - **仅有 minor（无 critical / important）**：仍建表，逐条处置 minor。
 - **有 critical / important**：建表，逐条填 status（不得留空）。
 
-### Round N (YYYY-MM-DD HH:MM UTC+8)
-
-有 finding 时用本表；每条 finding 一行。
+### Round 1 (2026-08-11 22:10 UTC+8)
 
 |finding_id|severity|status|rationale|fix_ref|
 |------|------|------|------|------|
-|t000_code_f001|critical/important/minor|已修|一句话|文件:行|
-|t000_test_f002|minor|遗留|一句话|pNNN|
+|t001_code_f001|important|已修|_strip_front_matter 判定改 `rstrip("\\r\\n")` 兼容 CRLF；CRLF front matter 逐字节保留|src/mdformat/_api.py:22|
+|t001_test_f001|important|已修|AC-003 测试改真实断言（分隔线不被误解析成标题），去掉恒真幂等断言|tests/test_front_matter.py:29|
+|t001_test_f002|important|已修|新增 CRLF 变体测试覆盖 AC-001/AC-004；判定兼容 CRLF|tests/test_front_matter.py:57|
+
+### Round 2 (2026-08-11 22:30 UTC+8)
+
+|finding_id|severity|status|rationale|fix_ref|
+|------|------|------|------|------|
+|t001_test_f004|critical|已修|file() 路径 CRLF 写回不损坏：新增 test_file_crlf_end_of_line_keep；LF 归一修复 \r\r\n|src/mdformat/_api.py:32|
+|t001_test_f003|important|已修|浅 YAML 判定：front matter 块须含 key: value 行，误吞边界（空块/标题）走基线渲染；新增 test_blank_separator_not_front_matter|src/mdformat/_api.py:30|
 
 ## 收尾报告
 
@@ -60,8 +66,8 @@ reviewer 标注为 spec 过时的 finding（实现合理但与 spec 描述不符
 ### 验收
 
 - spec：[`spec.md`](spec.md)
-- 结果：全部满足 / 未满足
-- 证据：每条 AC 在 `handoff.json` 的 `ac_evidence` 有对应引用（覆盖闭合门禁强制）；此处写一句话摘要，不复制 AC 正文
+- 结果：全部满足
+- 证据：handoff.json 的 `ac_evidence` 逐条覆盖 AC-001~004（LF/CRLF front matter 逐字节保留、正文格式化、误吞边界、file() 写回）
 
 ### Reviewer verdict
 
@@ -69,15 +75,21 @@ reviewer 标注为 spec 过时的 finding（实现合理但与 spec 描述不符
 
 `full`：
 
-- Round 1 code：PASS / FAIL
-- Round 1 test：PASS / FAIL
+- Round 1 code：FAIL
+- Round 1 test：FAIL
+- Round 2 code：FAIL
+- Round 2 test：FAIL
+- Round 3 code：PASS
+- Round 3 test：PASS
 
 `single`：
 
-- Round 1 general：PASS / FAIL
+- N/A（review_level=full）
 
 遗留不在此列出——见 `docs/pending/todo/`，本文件处置表的 `fix_ref` 指向对应 `pNNN`。
 
 ### 结果摘要
+
+mdformat 现已识别文档开头 YAML front matter（含 `key: value` 键值、LF/CRLF 行尾）并原样保留，正文照常格式化；普通 `---` 分隔线与误吞边界行为不变。
 
 - 一句话；无额外说明可写「见上」

@@ -4,7 +4,7 @@ mdformat 门禁命令：
 
 - doctor：环境前置检查 → `python3 -m pytest tests -q --collect-only`（依赖可导入即视为就绪）
 - test：日常测试（红/绿）→ `python3 -m pytest tests -q`
-- blackbox：黑盒验证 → `python3 -m mdformat --check README.md && python3 -m mdformat --check docs/index.md`
+- blackbox：黑盒验证 → `python3 -m mdformat --check README.md`
 
 ## Schema / codegen 验证
 

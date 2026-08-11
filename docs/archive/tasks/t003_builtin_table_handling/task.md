@@ -1,15 +1,15 @@
 ---
-tid: "t002"
-slug: "unified_indent_width"
-title: "支持统一缩进宽度配置"
-status: "backlog"
-branch: ""
+tid: "t003"
+slug: "builtin_table_handling"
+title: "内置表格解析与三态表格处理"
+status: "done"
+branch: "t003_builtin_table_handling"
 worktree: ""
 review_level: "full"
-diff_anchor: ""
+diff_anchor: "ddcd76a5c2e605d6d6f3490e766b54bbf17676b8"
 depends_on: ""
 conflicts_with: ""
-note: "来自 pending p002；fork 二次开发需求 2"
+note: "来自 pending p004；fork 二次开发需求 4"
 ---
 
 # Task 过程总账
@@ -44,14 +44,28 @@ reviewer 标注为 spec 过时的 finding（实现合理但与 spec 描述不符
 - **仅有 minor（无 critical / important）**：仍建表，逐条处置 minor。
 - **有 critical / important**：建表，逐条填 status（不得留空）。
 
-### Round N (YYYY-MM-DD HH:MM UTC+8)
-
-有 finding 时用本表；每条 finding 一行。
+### Round 1 (2026-08-12 00:10 UTC+8)
 
 |finding_id|severity|status|rationale|fix_ref|
 |------|------|------|------|------|
-|t000_code_f001|critical/important/minor|已修|一句话|文件:行|
-|t000_test_f002|minor|遗留|一句话|pNNN|
+|t003_code_f001|important|已修|build_mdit 总是 enable table 规则，none 模式表格转义保留（\| 不再剥除）；原样输出|src/mdformat/_util.py:37|
+|t003_code_f002|important|已修|_cell_text 渲染后转义裸 \|（re.sub），pad/compact 幂等|src/mdformat/renderer/_context.py:615|
+|t003_test_f001|minor|已修|AC-004 断言改二次格式化幂等 + 分隔行存在|tests/test_table.py:35|
+|t003_test_f002|minor|遗留|ragged 表格边界（markdown-it 上游截断）登记 pending|p005|
+
+### Round 2 (2026-08-12 00:30 UTC+8)
+
+|finding_id|severity|status|rationale|fix_ref|
+|------|------|------|------|------|
+|t003_code_f005|important|已修|对齐冒号保留：_table_aligns 区分 none/left/center/right，分隔行按 align 生成；_align_marker 修正长度|src/mdformat/renderer/_context.py:641|
+|t003_code_f003|minor|已修|对齐冒号在 pad/compact 均保留（并入 f005 修复）|src/mdformat/renderer/_context.py:641|
+
+### Round 3 (2026-08-12 00:45 UTC+8)
+
+|finding_id|severity|status|rationale|fix_ref|
+|------|------|------|------|------|
+|t003_test_f003|important|已修|对齐断言改完整分隔行匹配，独立验证左/中/右对齐|tests/test_table.py:81|
+|t003_code_f006|minor|已修|spec AC-001 措辞改"语义一致"（dash/填充/反斜杠归一属无渲染变化）|spec.md AC-001|
 
 ## 收尾报告
 
@@ -60,8 +74,8 @@ reviewer 标注为 spec 过时的 finding（实现合理但与 spec 描述不符
 ### 验收
 
 - spec：[`spec.md`](spec.md)
-- 结果：全部满足 / 未满足
-- 证据：每条 AC 在 `handoff.json` 的 `ac_evidence` 有对应引用（覆盖闭合门禁强制）；此处写一句话摘要，不复制 AC 正文
+- 结果：全部满足
+- 证据：handoff.json 的 `ac_evidence` 逐条覆盖 AC-001~005（三态表格、幂等、无表回归）
 
 ### Reviewer verdict
 
@@ -69,15 +83,23 @@ reviewer 标注为 spec 过时的 finding（实现合理但与 spec 描述不符
 
 `full`：
 
-- Round 1 code：PASS / FAIL
-- Round 1 test：PASS / FAIL
+- Round 1 code：FAIL
+- Round 1 test：PASS
+- Round 2 code：FAIL
+- Round 2 test：PASS
+- Round 3 code：PASS
+- Round 3 test：FAIL
+- Round 4 code：PASS
+- Round 4 test：PASS
 
 `single`：
 
-- Round 1 general：PASS / FAIL
+- N/A（review_level=full）
 
 遗留不在此列出——见 `docs/pending/todo/`，本文件处置表的 `fix_ref` 指向对应 `pNNN`。
 
 ### 结果摘要
+
+mdformat 新增内置表格解析与三态 `table_mode` 开关（CLI + `.mdformat.toml`）：none 原样保留、pad 对齐、compact 紧凑。转义管道与对齐冒号在各态保留，二次格式化幂等。
 
 - 一句话；无额外说明可写「见上」

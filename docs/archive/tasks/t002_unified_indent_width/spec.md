@@ -32,9 +32,9 @@ mdformat 遵循 CommonMark「marker 对齐内容」语义，不强制统一缩�
 <!-- /规范 -->
 
 - [ ] AC-001：未设置缩进宽度配置时，格式化输出与现有行为完全一致（无回归）。
-- [ ] AC-002：设置缩进宽度为 N（如 4）后，文档内所有嵌套列表缩进统一为 N 空格，无 2/3/5/6 等混用残留。
+- [ ] AC-002：设置缩进宽度为 N（如 4）后，文档内所有嵌套列表缩进统一为 N 空格，无 2/3/5/6 等混用残留；N 小于列表 marker 显示宽度时取 marker 宽度兜底（保证 CommonMark 嵌套结构不被破坏）。
 - [ ] AC-003：设置缩进宽度后，代码块（``` 围栏）内内容不被改动（逐字节比对）。
-- [ ] AC-004：配置可通过 CLI 选项与配置文件（`mdformat.toml` / pyproject `[tool.mdformat]`）两种方式指定。
+- [ ] AC-004：配置可通过 CLI 选项与配置文件（`.mdformat.toml`）两种方式指定。
 
 ### 可测试性声明
 
@@ -70,7 +70,7 @@ mock 边界、fixture 来源、断言目标。无特殊约定写「按项目默�
 尚未核实的外部 endpoint、API 形态、数据结构、第三方行为须分类标记；核实后删除标记，改为结论并注明验证方式。无则写「无」。
 <!-- /规范 -->
 
-- 缩进统一实现位置（renderer 输出层 vs 解析 token 层）：`UNVERIFIED-SPIKE`，task-work Step 1 实验确认改哪层能统一嵌套列表 marker 缩进且不破坏内容块语义。
+- 缩进统一实现位置：已验证（s002，2026-08-11）。改 renderer 层 `DEFAULT_RENDERERS["bullet_list"]`/`["ordered_list"]`（`_context.py`）的 `indent` 计算，从配置读宽度替代 `len(marker)`。token 层只有 level 无原始缩进宽度，不改解析。详见 `docs/findings/d002`。
 
 ### 风险与回退
 
