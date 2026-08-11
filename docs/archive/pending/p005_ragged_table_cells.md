@@ -5,4 +5,4 @@
 - 根因：markdown-it table 规则对 ragged 行的截断行为
 - 测试缺口：无覆盖
 - 线索：t003_test_f002
-- 处理：t003 遗留登记
+- 处理：t003-verified-gfm
