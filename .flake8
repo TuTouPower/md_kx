@@ -6,4 +6,10 @@ extend-ignore =
     E203,
     # A005: A module is shadowing a Python builtin module
     A005,
-extend-exclude = */site-packages/*
+extend-exclude =
+    */site-packages/*
+per-file-ignores =
+    # 模板工具链、测试与 hook：模板代码风格非业务，sync 强制覆盖不回改
+    scripts/repo_template/*:E402,E501,E302,E305,E303,C901,C420,F401,B014,B007
+    tests/repo_template/*:E402,E501,E302,E305,E303,C901,C420,F401,B014,B007
+    .claude/hooks/merge_guard.py:E501,E702,C901
