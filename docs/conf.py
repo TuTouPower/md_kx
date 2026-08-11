@@ -56,8 +56,6 @@ exclude_patterns = [
     'reviews',
     'guides',
     'archive',
-    # 开发需求说明：不在文档站点导航内
-    'dev_requirements.md',
 ]
 
 
