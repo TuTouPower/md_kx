@@ -490,7 +490,15 @@ def list_item(node: RenderTreeNode, context: RenderContext) -> str:
 def bullet_list(node: RenderTreeNode, context: RenderContext) -> str:
     marker_type = get_list_marker_type(node)
     first_line_indent = " "
-    indent = " " * len(marker_type + first_line_indent)
+    configured_width = context.options.get("mdformat", {}).get(
+        "indent_width", DEFAULT_OPTS["indent_width"]
+    )
+    if configured_width:
+        # Ensure the indentation always fits the marker; fall back to the
+        # default marker-aligned width otherwise.
+        indent = " " * max(configured_width, len(marker_type + first_line_indent))
+    else:
+        indent = " " * len(marker_type + first_line_indent)
     block_separator = "\n" if is_tight_list(node) else "\n\n"
 
     with context.indented(len(indent)):
@@ -529,7 +537,17 @@ def ordered_list(node: RenderTreeNode, context: RenderContext) -> str:
         starting_number = 1
     assert isinstance(starting_number, int)
 
-    if consecutive_numbering:
+    configured_width = context.options.get("mdformat", {}).get(
+        "indent_width", DEFAULT_OPTS["indent_width"]
+    )
+    if configured_width:
+        default_width = (
+            len(f"{list_len + starting_number - 1}{marker_type}{first_line_indent}")
+            if consecutive_numbering
+            else len(f"{starting_number}{marker_type}{first_line_indent}")
+        )
+        indent_width = max(configured_width, default_width)
+    elif consecutive_numbering:
         indent_width = len(
             f"{list_len + starting_number - 1}{marker_type}{first_line_indent}"
         )

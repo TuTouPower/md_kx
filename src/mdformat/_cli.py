@@ -241,6 +241,12 @@ def make_arg_parser(
         choices=("lf", "crlf", "keep"),
         help="output file line ending mode (default: lf)",
     )
+    parser.add_argument(
+        "--indent-width",
+        type=int,
+        metavar="INTEGER",
+        help="unified indentation width for nested lists (default: marker-aligned)",
+    )
     if sys.version_info >= (3, 13):  # pragma: >=3.13 cover
         parser.add_argument(
             "--exclude",

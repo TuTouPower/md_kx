@@ -2,11 +2,11 @@
 tid: "t002"
 slug: "unified_indent_width"
 title: "支持统一缩进宽度配置"
-status: "backlog"
-branch: ""
+status: "done"
+branch: "t002_unified_indent_width"
 worktree: ""
 review_level: "full"
-diff_anchor: ""
+diff_anchor: "cccbc5227e26a999244b79ed13565024260c8fe8"
 depends_on: ""
 conflicts_with: ""
 note: "来自 pending p002；fork 二次开发需求 2"
@@ -44,14 +44,27 @@ reviewer 标注为 spec 过时的 finding（实现合理但与 spec 描述不符
 - **仅有 minor（无 critical / important）**：仍建表，逐条处置 minor。
 - **有 critical / important**：建表，逐条填 status（不得留空）。
 
-### Round N (YYYY-MM-DD HH:MM UTC+8)
-
-有 finding 时用本表；每条 finding 一行。
+### Round 1 (2026-08-11 23:00 UTC+8)
 
 |finding_id|severity|status|rationale|fix_ref|
 |------|------|------|------|------|
-|t000_code_f001|critical/important/minor|已修|一句话|文件:行|
-|t000_test_f002|minor|遗留|一句话|pNNN|
+|t002_code_f001|important|已修|renderer 下界保护：configured 宽度取 max(config, marker 默认宽度)，避免破坏 CommonMark 嵌套|src/mdformat/renderer/_context.py:496,541|
+|t002_code_f002|important|已修|_validate_values 加 indent_width 校验（非负 int，拒 'abc'/负值）|src/mdformat/_conf.py:99|
+|t002_test_f001|important|已修|AC-003 改逐字节断言（代码块内容精确匹配）|tests/test_indent.py:30|
+|t002_test_f002|important|已修|补 AC-004 配置文件测试 + config_file 无效值用例（indent_width='abc'/-1）|tests/test_config_file.py:76|
+
+### Round 2 (2026-08-11 23:15 UTC+8)
+
+|finding_id|severity|status|rationale|fix_ref|
+|------|------|------|------|------|
+|t002_code_f003|minor|已修|_conf.py 校验行拆行修 E501|src/mdformat/_conf.py:100|
+|t002_test_f005|minor|已修|AC-003 改精确断言（围栏内追加内容可捕获）|tests/test_indent.py:30|
+
+### Round 3 (2026-08-11 23:30 UTC+8)
+
+|finding_id|severity|status|rationale|fix_ref|
+|------|------|------|------|------|
+|t002_test_f006|minor|已修|补兜底测试：N < marker 宽度时取 marker 宽度不破坏嵌套|tests/test_indent.py:54|
 
 ## 收尾报告
 
@@ -60,8 +73,8 @@ reviewer 标注为 spec 过时的 finding（实现合理但与 spec 描述不符
 ### 验收
 
 - spec：[`spec.md`](spec.md)
-- 结果：全部满足 / 未满足
-- 证据：每条 AC 在 `handoff.json` 的 `ac_evidence` 有对应引用（覆盖闭合门禁强制）；此处写一句话摘要，不复制 AC 正文
+- 结果：全部满足
+- 证据：handoff.json 的 `ac_evidence` 逐条覆盖 AC-001~004（默认无回归、统一缩进、代码块不动、CLI/配置文件）
 
 ### Reviewer verdict
 
@@ -69,15 +82,23 @@ reviewer 标注为 spec 过时的 finding（实现合理但与 spec 描述不符
 
 `full`：
 
-- Round 1 code：PASS / FAIL
-- Round 1 test：PASS / FAIL
+- Round 1 code：FAIL
+- Round 1 test：FAIL
+- Round 2 code：PASS
+- Round 2 test：PASS
+- Round 3 code：PASS
+- Round 3 test：PASS
+- Round 4 code：PASS
+- Round 4 test：PASS
 
 `single`：
 
-- Round 1 general：PASS / FAIL
+- N/A（review_level=full）
 
 遗留不在此列出——见 `docs/pending/todo/`，本文件处置表的 `fix_ref` 指向对应 `pNNN`。
 
 ### 结果摘要
+
+mdformat 新增 `indent_width` 配置（CLI + `.mdformat.toml`），统一嵌套列表缩进为指定宽度；默认行为不变，N 小于 marker 宽度时兜底不破坏 CommonMark 结构。
 
 - 一句话；无额外说明可写「见上」

@@ -18,6 +18,7 @@ DEFAULT_OPTS = MappingProxyType(
         "plugin": EMPTY_MAP,
         "extensions": None,
         "codeformatters": None,
+        "indent_width": 0,
     }
 )
 
@@ -94,6 +95,14 @@ def _validate_values(opts: Mapping, conf_path: Path) -> None:  # noqa: C901
         for lang in opts["codeformatters"]:
             if not isinstance(lang, str):
                 raise InvalidConfError(f"Invalid 'codeformatters' value in {conf_path}")
+    if "indent_width" in opts:
+        indent_value = opts["indent_width"]
+        if not (
+            isinstance(indent_value, int)
+            and not isinstance(indent_value, bool)
+            and indent_value >= 0
+        ):
+            raise InvalidConfError(f"Invalid 'indent_width' value in {conf_path}")
 
 
 def _validate_keys(opts: Mapping, conf_path: Path) -> None:
