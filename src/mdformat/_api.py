@@ -10,6 +10,40 @@ from mdformat._conf import DEFAULT_OPTS
 from mdformat._util import EMPTY_MAP, NULL_CTX, build_mdit, detect_newline_type
 
 
+def _strip_front_matter(md: str) -> tuple[str, str | None]:
+    """Strip a leading YAML front matter block, returning (body, front_matter).
+
+    Only a `---`-wrapped block at the very start of the document is treated
+    as front matter; otherwise the input is returned unchanged. Both LF and
+    CRLF line endings are recognized for the delimiters. The block is only
+    considered front matter when it contains at least one `key: value`-style
+    line (a shallow YAML check that avoids swallowing e.g. a blank line then
+    `---` as a thematic break). The returned front_matter is normalized to LF
+    line endings (matching text()'s normal LF output contract; file()
+    converts to the target newline afterwards). Any blank lines directly
+    after the closing delimiter are included in front_matter so the
+    separation from the body survives rendering.
+    """
+    lines = md.splitlines(keepends=True)
+    if not lines or lines[0].rstrip("\r\n") != "---":
+        return md, None
+    for i in range(1, len(lines)):
+        if lines[i].rstrip("\r\n") == "---":
+            # 浅 YAML 判定：块内须含至少一行 `key: value` 形式
+            body_lines = lines[1:i]
+            if not any(
+                line.rstrip("\r\n").strip() and ":" in line.rstrip("\r\n")
+                for line in body_lines
+            ):
+                return md, None
+            j = i + 1
+            while j < len(lines) and not lines[j].strip():
+                j += 1
+            front_matter = "".join(lines[:j]).replace("\r\n", "\n")
+            return "".join(lines[j:]), front_matter
+    return md, None
+
+
 def text(
     md: str,
     *,
@@ -23,6 +57,8 @@ def text(
     # Lazy import to improve module import time
     from mdformat.renderer import MDRenderer
 
+    body, front_matter = _strip_front_matter(md)
+
     with _first_pass_contextmanager:
         mdit = build_mdit(
             MDRenderer,
@@ -30,7 +66,7 @@ def text(
             extensions=extensions,
             codeformatters=codeformatters,
         )
-        rendering = mdit.render(md)
+        rendering = mdit.render(body)
 
     # If word wrap is changed, add a second pass of rendering.
     # Some escapes will be different depending on word wrap, so
@@ -38,6 +74,9 @@ def text(
     # twice seems like the easiest way to achieve stable formatting.
     if options.get("wrap", DEFAULT_OPTS["wrap"]) != "keep":
         rendering = mdit.render(rendering)
+
+    if front_matter is not None:
+        rendering = front_matter + rendering
 
     return rendering
 

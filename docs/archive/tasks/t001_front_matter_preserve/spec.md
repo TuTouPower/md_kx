@@ -69,7 +69,7 @@ mock 边界、fixture 来源、断言目标。无特殊约定写「按项目默�
 尚未核实的外部 endpoint、API 形态、数据结构、第三方行为须分类标记；核实后删除标记，改为结论并注明验证方式。无则写「无」。
 <!-- /规范 -->
 
-- front matter 识别实现方式（markdown-it-py 扩展 vs 预处理剥离）：`UNVERIFIED-SPIKE`，task-work Step 1 实验确认最简接入路径（需保证正文经 markdown-it-py 正常解析）。
+- front matter 识别实现方式：已验证（s001，2026-08-11）。采用 `text()` 入口预处理剥离方案（剥离文档开头闭合 `---` 块连带其后空行，正文走管线，重组）；markdown-it-py 无内置插件，插件方案需新依赖故弃。详见 `docs/findings/d001`。
 
 ### 风险与回退
 
