@@ -667,6 +667,43 @@ def _align_marker(align: str, width: int) -> str:
     return "-" * width
 
 
+def _separator_row(
+    aligns: list[str], num_cols: int, widths: list[int] | None = None
+) -> str:
+    """Build the header separator row with alignment colons."""
+    sep_cells = []
+    for i in range(num_cols):
+        align = aligns[i] if i < len(aligns) else "none"
+        if widths is None:
+            # compact: fixed-length marker
+            if align == "center":
+                sep_cells.append(":---:")
+            elif align == "right":
+                sep_cells.append("---:")
+            elif align == "left":
+                sep_cells.append(":---")
+            else:
+                sep_cells.append("---")
+        else:
+            # pad: marker aligned to the column width
+            sep_cells.append(_align_marker(align, max(widths[i], 3)))
+    return "| " + " | ".join(sep_cells) + " |"
+
+
+def _pad_rows(rows: list[list[str]], num_cols: int) -> list[str]:
+    """Render rows with cells padded to the widest in each column."""
+    widths = [0] * num_cols
+    for row in rows:
+        for i, cell in enumerate(row):
+            if i < num_cols:
+                widths[i] = max(widths[i], len(cell))
+    lines = []
+    for row in rows:
+        padded = [cell.ljust(widths[i]) for i, cell in enumerate(row[:num_cols])]
+        lines.append("| " + " | ".join(padded) + " |")
+    return lines
+
+
 def table(node: RenderTreeNode, context: RenderContext) -> str:
     table_mode = context.options.get("mdformat", {}).get(
         "table_mode", DEFAULT_OPTS["table_mode"]
@@ -677,47 +714,14 @@ def table(node: RenderTreeNode, context: RenderContext) -> str:
         return ""
 
     aligns = _table_aligns(node)
+    num_cols = max(len(r) for r in rows)
 
     if table_mode == "pad":
-        # pad mode: align cells to the widest in each column.
-        num_cols = max(len(r) for r in rows)
-        widths = [0] * num_cols
-        for row in rows:
-            for i, cell in enumerate(row):
-                if i < num_cols:
-                    widths[i] = max(widths[i], len(cell))
-        lines = []
-        for row in rows:
-            padded = [cell.ljust(widths[i]) for i, cell in enumerate(row[:num_cols])]
-            lines.append("| " + " | ".join(padded) + " |")
-        # Header separator row aligns with the widest column width.
-        sep_cells = []
-        for i in range(num_cols):
-            align = aligns[i] if i < len(aligns) else "none"
-            sep_cells.append(_align_marker(align, max(widths[i], 3)))
-        sep = "| " + " | ".join(sep_cells) + " |"
-        lines.insert(1, sep)
-        return "\n".join(lines)
+        lines = _pad_rows(rows, num_cols)
+    else:
+        lines = ["| " + " | ".join(row) + " |" for row in rows]
 
-    # none / compact: render each row compact with pipes escaped per cell.
-    lines = []
-    for row in rows:
-        lines.append("| " + " | ".join(cell for cell in row) + " |")
-    # Insert the header separator row after the first (header) row.
-    num_cols = max(len(r) for r in rows)
-    sep_cells = []
-    for i in range(num_cols):
-        align = aligns[i] if i < len(aligns) else "none"
-        if align == "center":
-            sep_cells.append(":---:")
-        elif align == "right":
-            sep_cells.append("---:")
-        elif align == "left":
-            sep_cells.append(":---")
-        else:
-            sep_cells.append("---")
-    sep = "| " + " | ".join(sep_cells) + " |"
-    lines.insert(1, sep)
+    lines.insert(1, _separator_row(aligns, num_cols))
     return "\n".join(lines)
 
 

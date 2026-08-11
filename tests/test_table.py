@@ -28,7 +28,9 @@ def test_table_pad_aligned():
 
 def test_table_compact():
     """AC-003：table_mode=compact 表格保持紧凑不 pad。"""
-    output = mdformat.text("| a | b |\n| --- | --- |\n| 1 | 2 |\n", options={"table_mode": "compact"})
+    output = mdformat.text(
+        "| a | b |\n| --- | --- |\n| 1 | 2 |\n", options={"table_mode": "compact"}
+    )
     assert "| a | b |" in output
     assert "| 1 | 2 |" in output
 

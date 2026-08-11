@@ -73,8 +73,8 @@ def test_blank_separator_not_front_matter():
 
 def test_file_crlf_end_of_line_keep():
     """AC-001 file() 路径：end_of_line=keep 时 CRLF front matter 写回不损坏。"""
-    import tempfile
     import os
+    import tempfile
 
     md = "---\r\nname: x\r\n---\r\n# Title\r\n\r\nSome text.\r\n"
     with tempfile.NamedTemporaryFile("w", suffix=".md", delete=False) as f:

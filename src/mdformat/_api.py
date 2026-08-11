@@ -13,16 +13,17 @@ from mdformat._util import EMPTY_MAP, NULL_CTX, build_mdit, detect_newline_type
 def _strip_front_matter(md: str) -> tuple[str, str | None]:
     """Strip a leading YAML front matter block, returning (body, front_matter).
 
-    Only a `---`-wrapped block at the very start of the document is treated
-    as front matter; otherwise the input is returned unchanged. Both LF and
-    CRLF line endings are recognized for the delimiters. The block is only
-    considered front matter when it contains at least one `key: value`-style
-    line (a shallow YAML check that avoids swallowing e.g. a blank line then
-    `---` as a thematic break). The returned front_matter is normalized to LF
-    line endings (matching text()'s normal LF output contract; file()
-    converts to the target newline afterwards). Any blank lines directly
-    after the closing delimiter are included in front_matter so the
-    separation from the body survives rendering.
+    Only a `---`-wrapped block at the very start of the document is
+    treated as front matter; otherwise the input is returned unchanged.
+    Both LF and CRLF line endings are recognized for the delimiters. The
+    block is only considered front matter when it contains at least one
+    `key: value`-style line (a shallow YAML check that avoids swallowing
+    e.g. a blank line then `---` as a thematic break). The returned
+    front_matter is normalized to LF line endings (matching text()'s
+    normal LF output contract; file() converts to the target newline
+    afterwards). Any blank lines directly after the closing delimiter
+    are included in front_matter so the separation from the body
+    survives rendering.
     """
     lines = md.splitlines(keepends=True)
     if not lines or lines[0].rstrip("\r\n") != "---":
