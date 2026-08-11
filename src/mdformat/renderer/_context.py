@@ -612,6 +612,115 @@ def ordered_list(node: RenderTreeNode, context: RenderContext) -> str:
         return text
 
 
+def _cell_text(node: RenderTreeNode, context: RenderContext) -> str:
+    """Render a single th/td cell's content (inline child)."""
+    for child in node.children:
+        if child.type == "inline":
+            text = child.render(context)
+            # Escape bare pipes so the cell boundary survives re-parsing.
+            return re.sub(r"(?<!\\)\|", r"\\|", text)
+    return ""
+
+
+def _table_rows(node: RenderTreeNode, context: RenderContext) -> list[list[str]]:
+    """Extract all rows from a table tree as list of cell strings."""
+    rows: list[list[str]] = []
+    for section in node.children:  # thead / tbody
+        for tr in section.children:
+            row = [_cell_text(td, context) for td in tr.children]
+            rows.append(row)
+    return rows
+
+
+def _table_aligns(node: RenderTreeNode) -> list[str]:
+    """Extract per-column alignment from the header row (th attrs).
+
+    Returns "none" for default alignment (no colon), "left" / "center" /
+    "right" for explicit colon alignment.
+    """
+    aligns: list[str] = []
+    for section in node.children:
+        if section.type == "thead":
+            for tr in section.children:
+                for th in tr.children:
+                    style = th.attrs.get("style", "") if th.attrs else ""
+                    if "text-align:center" in style:
+                        aligns.append("center")
+                    elif "text-align:right" in style:
+                        aligns.append("right")
+                    elif "text-align:left" in style:
+                        aligns.append("left")
+                    else:
+                        aligns.append("none")
+                break
+            break
+    return aligns
+
+
+def _align_marker(align: str, width: int) -> str:
+    if align == "center":
+        return ":" + "-" * width + ":"
+    if align == "right":
+        return "-" * width + ":"
+    if align == "left":
+        return ":" + "-" * width
+    return "-" * width
+
+
+def table(node: RenderTreeNode, context: RenderContext) -> str:
+    table_mode = context.options.get("mdformat", {}).get(
+        "table_mode", DEFAULT_OPTS["table_mode"]
+    )
+
+    rows = _table_rows(node, context)
+    if not rows:
+        return ""
+
+    aligns = _table_aligns(node)
+
+    if table_mode == "pad":
+        # pad mode: align cells to the widest in each column.
+        num_cols = max(len(r) for r in rows)
+        widths = [0] * num_cols
+        for row in rows:
+            for i, cell in enumerate(row):
+                if i < num_cols:
+                    widths[i] = max(widths[i], len(cell))
+        lines = []
+        for row in rows:
+            padded = [cell.ljust(widths[i]) for i, cell in enumerate(row[:num_cols])]
+            lines.append("| " + " | ".join(padded) + " |")
+        # Header separator row aligns with the widest column width.
+        sep_cells = []
+        for i in range(num_cols):
+            align = aligns[i] if i < len(aligns) else "none"
+            sep_cells.append(_align_marker(align, max(widths[i], 3)))
+        sep = "| " + " | ".join(sep_cells) + " |"
+        lines.insert(1, sep)
+        return "\n".join(lines)
+
+    # none / compact: render each row compact with pipes escaped per cell.
+    lines = []
+    for row in rows:
+        lines.append("| " + " | ".join(cell for cell in row) + " |")
+    # Insert the header separator row after the first (header) row.
+    num_cols = max(len(r) for r in rows)
+    sep_cells = []
+    for i in range(num_cols):
+        align = aligns[i] if i < len(aligns) else "none"
+        if align == "center":
+            sep_cells.append(":---:")
+        elif align == "right":
+            sep_cells.append("---:")
+        elif align == "left":
+            sep_cells.append(":---")
+        else:
+            sep_cells.append("---")
+    sep = "| " + " | ".join(sep_cells) + " |"
+    lines.insert(1, sep)
+    return "\n".join(lines)
+
+
 DEFAULT_RENDERERS: Mapping[str, Render] = MappingProxyType(
     {
         "inline": make_render_children(""),
@@ -635,6 +744,7 @@ DEFAULT_RENDERERS: Mapping[str, Render] = MappingProxyType(
         "bullet_list": bullet_list,
         "ordered_list": ordered_list,
         "list_item": list_item,
+        "table": table,
     }
 )
 

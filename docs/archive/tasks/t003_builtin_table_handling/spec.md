@@ -31,7 +31,7 @@ mdformat 核心是 CommonMark 解析器，默认不解析表格。表格支持�
 每条 AC 条目带稳定编号 `AC-NNN`（三位十进制、task 内从 001 顺序编号、唯一、删除不复用）；收尾时 `handoff.json` 的 `ac_evidence` 须精确覆盖本区全部编号。编号约定见 `docs/blueprint/conventions.md`。
 <!-- /规范 -->
 
-- [ ] AC-001：表格开关设为「不处理表格」（默认）时，表格内容不被触碰，原样输出。
+- [ ] AC-001：表格开关设为「不处理表格」（默认）时，表格内容不被触碰，输出与原输入语义一致（单元格文本、转义管道、对齐语义保留）。
 - [ ] AC-002：表格开关设为「pad 对齐」时，表格单元格补空格对齐（`| a | b |` 变成等宽对齐格式）。
 - [ ] AC-003：表格开关设为「紧凑」时，表格保持紧凑，单元格不补空格对齐（`| a | b |` 不变 `| a    | b   |`）。
 - [ ] AC-004：三种开关下，表格语法均正确、可被正常渲染。
@@ -71,7 +71,7 @@ mock 边界、fixture 来源、断言目标。无特殊约定写「按项目默�
 尚未核实的外部 endpoint、API 形态、数据结构、第三方行为须分类标记；核实后删除标记，改为结论并注明验证方式。无则写「无」。
 <!-- /规范 -->
 
-- 表格解析接入方式（markdown-it-py 内置 table 扩展 vs 自研解析）：`UNVERIFIED-SPIKE`，task-work Step 1 实验确认最简接入路径（markdown-it-py 本身提供 table 规则可复用，需评估是否属"不引入新依赖"）。
+- 表格解析接入方式：已验证（s003，2026-08-12）。markdown-it-py `commonmark` preset 内置 `table` 规则（默认禁用），`ruler.enable("table")` 启用，无需新依赖。需在 mdformat `DEFAULT_RENDERERS` 新增 table 系列 token 渲染器（table_open/thead/tbody/tr/th/td）重组 Markdown 文本。详见 `docs/findings/d003`。
 
 ### 风险与回退
 

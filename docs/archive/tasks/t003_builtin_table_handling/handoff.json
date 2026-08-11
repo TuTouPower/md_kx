@@ -1,0 +1,20 @@
+{
+  "tid": "t003",
+  "attempt": 1,
+  "execution_id": "e59679e4506c4c1c9ca0b41d15be729a",
+  "status": "done",
+  "branch": "t003_builtin_table_handling",
+  "base_sha": "ddcd76a5c2e605d6d6f3490e766b54bbf17676b8",
+  "tests": "pytest tests -q：4684 passed, 5 skipped",
+  "blackbox": "mdformat --check README.md 通过；CLI --table-mode compact/pad 输出验证",
+  "review": "Round 4 code PASS / test PASS",
+  "ac_evidence": {
+    "AC-001": ["tests/test_table.py::test_table_none_untouched 通过", "tests/test_table.py::test_escaped_pipe_preserved 通过", "tests/test_table.py::test_alignment_colons_preserved 通过"],
+    "AC-002": ["tests/test_table.py::test_table_pad_aligned 通过"],
+    "AC-003": ["tests/test_table.py::test_table_compact 通过"],
+    "AC-004": ["tests/test_table.py::test_table_syntax_valid 通过", "tests/test_table.py::test_escaped_pipe_preserved 通过"],
+    "AC-005": ["tests/test_table.py::test_no_table_no_regression 通过"]
+  },
+  "pending": ["p005"],
+  "findings": ["d003"]
+}

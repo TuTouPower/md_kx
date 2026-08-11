@@ -77,6 +77,7 @@ If a file is not properly formatted, the exit code will be non-zero.
 foo@bar:~$ mdformat --help
 usage: mdformat [-h] [--check] [--no-validate] [--version] [--number]
                 [--wrap {keep,no,INTEGER}] [--end-of-line {lf,crlf,keep}]
+                [--indent-width INTEGER] [--table-mode {none,pad,compact}]
                 [--exclude PATTERN] [--extensions EXTENSION]
                 [--codeformatters LANGUAGE]
                 [paths ...]
@@ -96,6 +97,11 @@ options:
                         paragraph word wrap mode (default: keep)
   --end-of-line {lf,crlf,keep}
                         output file line ending mode (default: lf)
+  --indent-width INTEGER
+                        unified indentation width for nested lists (default:
+                        marker-aligned)
+  --table-mode {none,pad,compact}
+                        table handling mode (default: none)
   --exclude PATTERN     exclude files that match the Unix-style glob pattern
                         (multiple allowed)
   --extensions EXTENSION

@@ -19,6 +19,7 @@ DEFAULT_OPTS = MappingProxyType(
         "extensions": None,
         "codeformatters": None,
         "indent_width": 0,
+        "table_mode": "none",
     }
 )
 
@@ -103,6 +104,9 @@ def _validate_values(opts: Mapping, conf_path: Path) -> None:  # noqa: C901
             and indent_value >= 0
         ):
             raise InvalidConfError(f"Invalid 'indent_width' value in {conf_path}")
+    if "table_mode" in opts:
+        if opts["table_mode"] not in {"none", "pad", "compact"}:
+            raise InvalidConfError(f"Invalid 'table_mode' value in {conf_path}")
 
 
 def _validate_keys(opts: Mapping, conf_path: Path) -> None:

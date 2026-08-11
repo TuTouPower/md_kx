@@ -247,6 +247,11 @@ def make_arg_parser(
         metavar="INTEGER",
         help="unified indentation width for nested lists (default: marker-aligned)",
     )
+    parser.add_argument(
+        "--table-mode",
+        choices=("none", "pad", "compact"),
+        help="table handling mode (default: none)",
+    )
     if sys.version_info >= (3, 13):  # pragma: >=3.13 cover
         parser.add_argument(
             "--exclude",
