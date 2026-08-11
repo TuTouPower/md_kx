@@ -2,5 +2,51 @@
     "generated_by": "scripts/repo_template/task.py",
     "authority": "docs/tasks/{tid}_{slug}/task.md front matter",
     "workspace": ".",
-    "tasks": []
+    "tasks": [
+        {
+            "tid": "t001",
+            "slug": "front_matter_preserve",
+            "title": "支持 YAML front matter 识别但不格式化",
+            "status": "backlog",
+            "branch": "",
+            "worktree": "",
+            "review_level": "full",
+            "diff_anchor": "",
+            "depends_on": "",
+            "conflicts_with": "",
+            "schedule_status": "",
+            "note": "来自 pending p001；fork 二次开发需求 1",
+            "dir": "docs/tasks/t001_front_matter_preserve"
+        },
+        {
+            "tid": "t002",
+            "slug": "unified_indent_width",
+            "title": "支持统一缩进宽度配置",
+            "status": "backlog",
+            "branch": "",
+            "worktree": "",
+            "review_level": "full",
+            "diff_anchor": "",
+            "depends_on": "",
+            "conflicts_with": "",
+            "schedule_status": "",
+            "note": "来自 pending p002；fork 二次开发需求 2",
+            "dir": "docs/tasks/t002_unified_indent_width"
+        },
+        {
+            "tid": "t003",
+            "slug": "builtin_table_handling",
+            "title": "内置表格解析与三态表格处理",
+            "status": "backlog",
+            "branch": "",
+            "worktree": "",
+            "review_level": "full",
+            "diff_anchor": "",
+            "depends_on": "",
+            "conflicts_with": "",
+            "schedule_status": "",
+            "note": "来自 pending p004；fork 二次开发需求 4",
+            "dir": "docs/tasks/t003_builtin_table_handling"
+        }
+    ]
 }
