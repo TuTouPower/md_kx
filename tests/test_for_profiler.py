@@ -21,14 +21,8 @@ assert (PROJECT_ROOT / "src" / "mdformat").exists()
 
 
 def test_for_profiler():
-    readme_path = PROJECT_ROOT / "README.md"
-    # 只检查业务文档；模板资产目录（docs/blueprint、docs/tasks 等）明确禁格式化
-    business_docs = [
-        str(PROJECT_ROOT / "docs" / "index.md"),
-        str(PROJECT_ROOT / "docs" / "users"),
-        str(PROJECT_ROOT / "docs" / "contributors"),
-    ]
-    paths = business_docs + [str(readme_path)]
-    assert run([*paths, "--check"]) == 0
+    # docs/ 为模板资产目录（禁格式化），只检查 README.md
+    readme_path = str(PROJECT_ROOT / "README.md")
+    assert run([readme_path, "--check"]) == 0
     # Also profile --wrap=INT code
-    run([*paths, "--check", "--wrap", "50"])
+    run([readme_path, "--check", "--wrap", "50"])

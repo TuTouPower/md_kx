@@ -32,9 +32,6 @@ keywords = ["mdformat", "markdown", "commonmark", "formatter", "pre-commit"]
 
 [project.urls]
 "Homepage" = "https://github.com/hukkin/mdformat"
-"Documentation" = "https://mdformat.readthedocs.io"
-"Style guide" = "https://mdformat.readthedocs.io/en/stable/users/style.html"
-"Changelog" = "https://mdformat.readthedocs.io/en/stable/users/changelog.html"
 
 [project.scripts]
 mdformat = "mdformat.__main__:run"
@@ -117,17 +114,6 @@ commands = [
     ["mdformat", { replace = "posargs", extend = true }],
 ]
 
-[tool.tox.env."docs"]
-description = "invoke sphinx-build to build the HTML docs"
-skip_install = true
-deps = [
-    "-r docs/requirements.txt",
-]
-commands = [
-    ["sphinx-build", "-d", "{toxworkdir}/docs_doctree", "docs/", "{toxworkdir}/docs_out", "-W", "-b", "html", { replace = "posargs", extend = true }],
-    ["python", "-c", 'import pathlib; print("documentation available under file://\{0\}".format(pathlib.Path(r"{toxworkdir}") / "docs_out" / "index.html"))'],
-]
-
 [tool.tox.env."fuzz"]
 description = 'run the fuzzer (needs "apt install clang")'
 deps = [
@@ -150,9 +136,9 @@ description = "benchmark mdformat against local doc files"
 deps = []
 commands = [
     ["python", "-c", "print('Wrap mode: keep')"],
-    ["python", "-m", "timeit", "from mdformat._cli import run", 'run(["README.md", "docs/", "--check"])'],
+    ["python", "-m", "timeit", "from mdformat._cli import run", 'run(["README.md", "--check"])'],
     ["python", "-c", "print('Wrap mode: 50')"],
-    ["python", "-m", "timeit", "from mdformat._cli import run", 'run(["README.md", "docs/", "--check", "--wrap", "50"])'],
+    ["python", "-m", "timeit", "from mdformat._cli import run", 'run(["README.md", "--check", "--wrap", "50"])'],
 ]
 
 [tool.tox.env."benchmark-import"]

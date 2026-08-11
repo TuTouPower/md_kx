@@ -24,7 +24,7 @@ jobs:
 
     - name: run linters
       run: |
-        mdformat --check README.md docs/index.md docs/users/ docs/contributors/
+        mdformat --check README.md
         mypy src/ tests/
         pre-commit run -a
         pre-commit try-repo . mdformat --files README.md

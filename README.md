@@ -1,6 +1,5 @@
 <div align="center">
 
-[![Documentation Status](https://readthedocs.org/projects/mdformat/badge/?version=latest)](https://mdformat.readthedocs.io/en/latest/?badge=latest)
 [![Build Status](https://github.com/hukkin/mdformat/actions/workflows/tests.yaml/badge.svg?branch=master)](https://github.com/hukkin/mdformat/actions?query=workflow%3ATests+branch%3Amaster+event%3Apush)
 [![codecov.io](https://codecov.io/gh/hukkin/mdformat/branch/master/graph/badge.svg)](https://codecov.io/gh/hukkin/mdformat)
 [![PyPI version](https://img.shields.io/pypi/v/mdformat)](https://pypi.org/project/mdformat)
@@ -18,8 +17,6 @@ that can be used to enforce a consistent style in Markdown files.
 Mdformat is a Unix-style command-line tool as well as a Python library.
 
 <!-- end mini-description -->
-
-Find out more in the [docs](https://mdformat.readthedocs.io).
 
 <!-- start installing -->
 
@@ -115,21 +112,6 @@ The `--exclude` option is only available on Python 3.13+.
 
 <!-- end cli-usage -->
 
-## Documentation
-
-This README merely provides a quickstart guide for the command line interface.
-For more information refer to the [documentation](https://mdformat.readthedocs.io).
-Here's a few pointers to get you started:
-
-- [Style guide](https://mdformat.readthedocs.io/en/stable/users/style.html)
-- [Python API usage](https://mdformat.readthedocs.io/en/stable/users/installation_and_usage.html#python-api-usage)
-- [Usage as a pre-commit hook](https://mdformat.readthedocs.io/en/stable/users/installation_and_usage.html#usage-as-a-pre-commit-hook)
-- [Plugin usage](https://mdformat.readthedocs.io/en/stable/users/plugins.html)
-- [Plugin development guide](https://mdformat.readthedocs.io/en/stable/contributors/contributing.html)
-- [List of code block formatter plugins](https://mdformat.readthedocs.io/en/stable/users/plugins.html#existing-plugins)
-- [List of parser extension plugins](https://mdformat.readthedocs.io/en/stable/users/plugins.html#id1)
-- [Changelog](https://mdformat.readthedocs.io/en/stable/users/changelog.html)
-
 <!-- start faq -->
 
 ## Frequently Asked Questions
@@ -149,7 +131,7 @@ so incompatibilities are unavoidable.
 
 Luckily mdformat is extensible by plugins.
 For many Markdown engines you'll find support by searching
-[the plugin docs](https://mdformat.readthedocs.io/en/stable/users/plugins.html)
+[the plugin docs](https://github.com/topics/mdformat)
 or [mdformat GitHub topic](https://github.com/topics/mdformat).
 
 You may also want to consider a documentation generator that adheres to CommonMark as its base syntax
