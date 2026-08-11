@@ -1,5 +1,7 @@
 mdformat：CommonMark 合规的 Markdown 格式化器，提供 CLI、Python API 与 pre-commit hook。
 
+本项目 fork 自 [hukkin/mdformat](https://github.com/hukkin/mdformat)，基于上游自行二次开发。
+
 本文件是 agent 行为入口：目录权责、状态机与 skill 路由。只加载当前任务所需文档。
 
 命名与格式约定见 `docs/blueprint/conventions.md`「命名与格式」。
