@@ -39,7 +39,26 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = [
+    '_build',
+    'Thumbs.db',
+    '.DS_Store',
+    # 模板资产目录：不属于文档站点；模板文档用 front matter/紧凑表格，
+    # Sphinx -W 构建会解析失败，故排除
+    'blueprint',
+    'specs',
+    'specs_index.md',
+    'tasks',
+    'handoff.md',
+    'pending',
+    'findings',
+    'spikes',
+    'reviews',
+    'guides',
+    'archive',
+    # 开发需求说明：不在文档站点导航内
+    'dev_requirements.md',
+]
 
 
 # -- Options for HTML output -------------------------------------------------

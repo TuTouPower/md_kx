@@ -133,3 +133,29 @@ dmypy.json
 
 # VS Code
 .vscode/
+
+# 模板：产物 / 运行数据 / 一次性草稿
+/artifacts/
+/data/
+.scratch/
+node_modules/
+
+# 模板：本地密钥（真值不入库；.env.example 例外）
+.env.*
+!.env.example
+
+# 模板：审计日志必须入库（例外）
+!docs/archive/tasks_audit.log
+
+# 模板：多路 review 会话的过程文件（报告 review_*.md 本身入库）
+docs/reviews/review_*/_meta/
+docs/archive/reviews/review_*/_meta/
+
+# 模板：merge guard hook 运行时状态（token 一次性，不入库）
+.claude/state/
+
+# 模板：并行调度账本，运行态不入库
+docs/runtime/
+
+# 模板：消费项目本地同步状态（init 生成；各消费仓自行跟踪）
+.agents/skills/repo-template-sync/sync_state.json
