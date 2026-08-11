@@ -159,3 +159,6 @@ docs/runtime/
 
 # 模板：消费项目本地同步状态（init 生成；各消费仓自行跟踪）
 .agents/skills/repo-template-sync/sync_state.json
+
+# uv 运行生成锁文件（项目用 tox/pip 管理，不提交）
+uv.lock
