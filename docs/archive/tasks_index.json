@@ -2,5 +2,51 @@
     "generated_by": "scripts/repo_template/task.py",
     "authority": "docs/archive/tasks/{tid}_{slug}/task.md front matter",
     "workspace": ".",
-    "tasks": []
+    "tasks": [
+        {
+            "tid": "t001",
+            "slug": "front_matter_preserve",
+            "title": "支持 YAML front matter 识别但不格式化",
+            "status": "done",
+            "branch": "t001_front_matter_preserve",
+            "worktree": "",
+            "review_level": "full",
+            "diff_anchor": "2586c5769c2e76c40010c1b6771922611f160b0d",
+            "depends_on": "",
+            "conflicts_with": "",
+            "schedule_status": "",
+            "note": "来自 pending p001；fork 二次开发需求 1",
+            "dir": "docs/archive/tasks/t001_front_matter_preserve"
+        },
+        {
+            "tid": "t002",
+            "slug": "unified_indent_width",
+            "title": "支持统一缩进宽度配置",
+            "status": "done",
+            "branch": "t002_unified_indent_width",
+            "worktree": "",
+            "review_level": "full",
+            "diff_anchor": "cccbc5227e26a999244b79ed13565024260c8fe8",
+            "depends_on": "",
+            "conflicts_with": "",
+            "schedule_status": "",
+            "note": "来自 pending p002；fork 二次开发需求 2",
+            "dir": "docs/archive/tasks/t002_unified_indent_width"
+        },
+        {
+            "tid": "t003",
+            "slug": "builtin_table_handling",
+            "title": "内置表格解析与三态表格处理",
+            "status": "done",
+            "branch": "t003_builtin_table_handling",
+            "worktree": "",
+            "review_level": "full",
+            "diff_anchor": "ddcd76a5c2e605d6d6f3490e766b54bbf17676b8",
+            "depends_on": "",
+            "conflicts_with": "",
+            "schedule_status": "",
+            "note": "来自 pending p004；fork 二次开发需求 4",
+            "dir": "docs/archive/tasks/t003_builtin_table_handling"
+        }
+    ]
 }
