@@ -2,21 +2,5 @@
     "generated_by": "scripts/repo_template/task.py",
     "authority": "docs/tasks/{tid}_{slug}/task.md front matter",
     "workspace": ".",
-    "tasks": [
-        {
-            "tid": "t007",
-            "slug": "fix_list_table_lazy_continuation",
-            "title": "修复列表项后 0 缩进表格行 validate 失败",
-            "status": "backlog",
-            "branch": "",
-            "worktree": "",
-            "review_level": "full",
-            "diff_anchor": "",
-            "depends_on": "",
-            "conflicts_with": "",
-            "schedule_status": "",
-            "note": "来自 p006；enable table 后 lazy continuation 解析不一致",
-            "dir": "docs/tasks/t007_fix_list_table_lazy_continuation"
-        }
-    ]
+    "tasks": []
 }

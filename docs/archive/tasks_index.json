@@ -92,6 +92,21 @@
             "schedule_status": "",
             "note": "entry point、CI、pre-commit hook、README/docs 品牌",
             "dir": "docs/archive/tasks/t006_rename_cli_docs_md_kx"
+        },
+        {
+            "tid": "t007",
+            "slug": "fix_list_table_lazy_continuation",
+            "title": "修复列表项后 0 缩进表格行 validate 失败",
+            "status": "done",
+            "branch": "t007_fix_list_table_lazy_continuation",
+            "worktree": "",
+            "review_level": "full",
+            "diff_anchor": "b3e6991001d6b136b35e9a6b4c2b584130abde64",
+            "depends_on": "",
+            "conflicts_with": "",
+            "schedule_status": "",
+            "note": "来自 p006；enable table 后 lazy continuation 解析不一致",
+            "dir": "docs/archive/tasks/t007_fix_list_table_lazy_continuation"
         }
     ]
 }
