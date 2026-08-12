@@ -1,6 +1,6 @@
 import pytest
 
-from mdformat.renderer import _util
+from md_kx.renderer import _util
 
 
 @pytest.mark.parametrize(

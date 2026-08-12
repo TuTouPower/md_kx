@@ -1,5 +1,5 @@
-from mdformat.renderer import DEFAULT_RENDERERS
-from mdformat.renderer._context import RenderContext
+from md_kx.renderer import DEFAULT_RENDERERS
+from md_kx.renderer._context import RenderContext
 
 
 def render_fake_syntax(node, ctx):

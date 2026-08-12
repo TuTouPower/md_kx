@@ -10,14 +10,14 @@ in this project are formatted. To get and read profiler results:
 
 from pathlib import Path
 
-from mdformat._cli import run
+from md_kx._cli import run
 
 PROJECT_ROOT = Path(__file__).parent.parent
 # Make a few asserts to ensure this actually is the project root
 # (a safeguard against refactorings where this file is moved).
 assert (PROJECT_ROOT / "docs").exists()
 assert (PROJECT_ROOT / "README.md").exists()
-assert (PROJECT_ROOT / "src" / "mdformat").exists()
+assert (PROJECT_ROOT / "src" / "md_kx").exists()
 
 
 def test_for_profiler():

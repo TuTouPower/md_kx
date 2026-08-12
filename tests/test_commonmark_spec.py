@@ -4,8 +4,8 @@ from pathlib import Path
 from _pytest.mark import ParameterSet
 import pytest
 
-import mdformat
-from mdformat._util import is_md_equal
+import md_kx
+from md_kx._util import is_md_equal
 
 SPECTESTS_PATH = Path(__file__).parent / "data" / "commonmark_spec_v0.31.2.json"
 SPECTESTS_CASES = tuple(
@@ -110,7 +110,7 @@ ALL_CASES = EXTRA_CASES + SPECTESTS_CASES
     ],
 )
 def test_commonmark_spec(wrap, number, entry):
-    """mdformat.text() against the Commonmark spec.
+    """md_kx.text() against the Commonmark spec.
 
     Test that:
     1. Markdown AST is the same before and after 1 pass of formatting
@@ -118,7 +118,7 @@ def test_commonmark_spec(wrap, number, entry):
     """
     options = {"wrap": wrap, "number": number}
     md_original = entry["md"]
-    md_new = mdformat.text(md_original, options=options)
-    md_2nd_pass = mdformat.text(md_new, options=options)
+    md_new = md_kx.text(md_original, options=options)
+    md_2nd_pass = md_kx.text(md_new, options=options)
     assert is_md_equal(md_original, md_new, options=options)
     assert md_new == md_2nd_pass

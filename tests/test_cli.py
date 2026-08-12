@@ -4,9 +4,9 @@ from unittest.mock import patch
 
 import pytest
 
-import mdformat
-from mdformat._cli import get_plugin_info_str, run, wrap_paragraphs
-from mdformat.plugins import CODEFORMATTERS, PARSER_EXTENSIONS
+import md_kx
+from md_kx._cli import get_plugin_info_str, run, wrap_paragraphs
+from md_kx.plugins import CODEFORMATTERS, PARSER_EXTENSIONS
 from tests.utils import (
     FORMATTED_MARKDOWN,
     UNFORMATTED_MARKDOWN,
@@ -155,7 +155,7 @@ def test_wrap_paragraphs():
             [
                 'Error: Could not format "/home/user/file_name_longer_than_wrap_width--------------------------------------.md".',  # noqa: E501
                 "The formatted Markdown renders to different HTML than the input Markdown. "  # noqa: E501
-                "This is likely a bug in mdformat. "
+                "This is likely a bug in md_kx. "
                 "Please create an issue report here: "
                 "https://github.com/hukkin/mdformat/issues",
             ]
@@ -164,8 +164,8 @@ def test_wrap_paragraphs():
             '"/home/user/file_name_longer_than_wrap_width--------------------------------------.md".\n'  # noqa: E501
             "\n"
             "The formatted Markdown renders to different HTML than the input\n"
-            "Markdown. This is likely a bug in mdformat. Please create an issue\n"
-            "report here: https://github.com/hukkin/mdformat/issues\n"
+            "Markdown. This is likely a bug in md_kx. Please create an issue report\n"
+            "here: https://github.com/hukkin/mdformat/issues\n"
         )
 
 
@@ -174,7 +174,7 @@ def test_version(capsys):
         run(["--version"])
     assert exc_info.value.code == 0
     captured = capsys.readouterr()
-    assert captured.out.startswith(f"mdformat {mdformat.__version__}")
+    assert captured.out.startswith(f"md_kx {md_kx.__version__}")
 
 
 def test_no_wrap(tmp_path):
@@ -349,7 +349,7 @@ def test_cli_no_validate(tmp_path):
     content = "1. ordered"
     file_path.write_text(content)
 
-    with patch("mdformat.renderer._context.get_list_marker_type", return_value="?"):
+    with patch("md_kx.renderer._context.get_list_marker_type", return_value="?"):
         assert run((str(file_path),)) == 1
         assert file_path.read_text() == content
 
@@ -398,7 +398,7 @@ def test_exclude(tmp_path):
     file_path_1.write_text(UNFORMATTED_MARKDOWN)
     cwd = tmp_path
 
-    with patch("mdformat._cli.Path.cwd", return_value=cwd):
+    with patch("md_kx._cli.Path.cwd", return_value=cwd):
         for good_pattern in [
             "folder1/folder2/file1.md",
             "**",
