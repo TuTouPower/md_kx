@@ -1,0 +1,19 @@
+{
+  "tid": "t004",
+  "attempt": 1,
+  "execution_id": "c7980fe365c14aedb20912ea8f46a6ce",
+  "status": "done",
+  "branch": "t004_rename_package_md_kx",
+  "base_sha": "5e1fbc147a53203f8e632af02d20cb44953d2adc",
+  "tests": "python -c import md_kx（1.0.0）+ CLI --version + 三态功能冒烟通过",
+  "blackbox": "python -m md_kx --version 输出 md_kx 1.0.0；三态功能经新包名正常",
+  "review": "Round 1 code PASS / test PASS",
+  "ac_evidence": {
+    "AC-001": ["python -c import md_kx 成功，src/md_kx 存在、src/mdformat 不存在"],
+    "AC-002": ["grep 确认 src/md_kx 无 import mdformat 残留"],
+    "AC-003": ["pyproject name=md_kx、entry md_kx=md_kx.__main__:run、coverage/isort 引用 md_kx"],
+    "AC-004": ["python -m md_kx --version 输出 md_kx 1.0.0"]
+  },
+  "pending": [],
+  "findings": []
+}

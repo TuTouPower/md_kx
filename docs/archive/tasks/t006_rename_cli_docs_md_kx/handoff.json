@@ -1,0 +1,19 @@
+{
+  "tid": "t006",
+  "attempt": 1,
+  "execution_id": "1e5032e4fe094f72937c80fc98e29a1c",
+  "status": "done",
+  "branch": "t006_rename_cli_docs_md_kx",
+  "base_sha": "f2c50f7622f39621383e766e6294d868146ed594",
+  "tests": "pytest tests -q：4684 passed, 5 skipped",
+  "blackbox": "python -m md_kx --check README.md 通过；pre-commit 全绿（含 validate-manifest）",
+  "review": "Round 3 general PASS",
+  "ac_evidence": {
+    "AC-001": ["README/docs grep 无品牌 mdformat 残留（仅上游链接/fork 指代）"],
+    "AC-002": ["pre-commit-hooks.yaml id/name/entry=md_kx，validate-manifest 通过"],
+    "AC-003": ["tests.yaml 用 md_kx --check；本地等价命令通过"],
+    "AC-004": ["README usage 缩进 13 空格与实际 md_kx --help 字节一致"]
+  },
+  "pending": [],
+  "findings": []
+}

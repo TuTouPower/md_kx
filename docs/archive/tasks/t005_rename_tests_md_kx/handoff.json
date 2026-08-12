@@ -1,0 +1,18 @@
+{
+  "tid": "t005",
+  "attempt": 1,
+  "execution_id": "7e45ad62dc6d499ab5a38e3c68e4ddc5",
+  "status": "done",
+  "branch": "t005_rename_tests_md_kx",
+  "base_sha": "71a49c1457fd53f26442fd49a58130b1c257b97b",
+  "tests": "pytest tests -q：4684 passed, 5 skipped",
+  "blackbox": "python -m md_kx --check README.md 通过；tests/ grep mdformat 残留 0",
+  "review": "Round 1 code PASS / test PASS",
+  "ac_evidence": {
+    "AC-001": ["grep tests/ 无残留 mdformat 引用（仅第三方插件名/upstream 链接）"],
+    "AC-002": ["pytest tests -q 4684 passed"],
+    "AC-003": ["test_table/test_indent/test_front_matter 24 passed"]
+  },
+  "pending": [],
+  "findings": []
+}

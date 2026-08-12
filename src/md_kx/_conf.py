@@ -5,8 +5,8 @@ import functools
 from pathlib import Path
 from types import MappingProxyType
 
-from mdformat._compat import tomllib
-from mdformat._util import EMPTY_MAP
+from md_kx._compat import tomllib
+from md_kx._util import EMPTY_MAP
 
 DEFAULT_OPTS = MappingProxyType(
     {
@@ -36,7 +36,7 @@ class InvalidConfError(Exception):
 
 @functools.lru_cache
 def read_toml_opts(conf_dir: Path) -> tuple[Mapping, Path | None]:
-    conf_path = conf_dir / ".mdformat.toml"
+    conf_path = conf_dir / ".md_kx.toml"
     if not conf_path.is_file():
         parent_dir = conf_dir.parent
         if conf_dir == parent_dir:

@@ -1,14 +1,14 @@
 # 测试
 
-mdformat 门禁命令：
+md_kx 门禁命令：
 
 - doctor：环境前置检查 → `python3 -m pytest tests -q --collect-only`（依赖可导入即视为就绪）
 - test：日常测试（红/绿）→ `python3 -m pytest tests -q`
-- blackbox：黑盒验证 → `python3 -m mdformat --check README.md`
+- blackbox：黑盒验证 → `python3 -m md_kx --check README.md`
 
 ## Schema / codegen 验证
 
-无。mdformat 无 schema、migration 或 codegen 流程。
+无。md_kx 无 schema、migration 或 codegen 流程。
 
 普通 merge 不自动执行生产 migration、部署或数据操作；此类动作遵循项目发布流程。
 

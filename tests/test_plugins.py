@@ -6,15 +6,15 @@ from unittest.mock import patch
 from markdown_it import MarkdownIt
 import pytest
 
-import mdformat
-from mdformat._cli import run
-from mdformat.plugins import (
+import md_kx
+from md_kx._cli import run
+from md_kx.plugins import (
     _PARSER_EXTENSION_DISTS,
     CODEFORMATTERS,
     PARSER_EXTENSIONS,
     _load_entrypoints,
 )
-from mdformat.renderer import MDRenderer
+from md_kx.renderer import MDRenderer
 from tests.utils import (
     ASTChangingPlugin,
     JSONFormatterPlugin,
@@ -30,7 +30,7 @@ def test_code_formatter(monkeypatch):
         return "dummy\n"
 
     monkeypatch.setitem(CODEFORMATTERS, "lang", fmt_func)
-    text = mdformat.text(
+    text = md_kx.text(
         dedent(
             """\
     ```lang
@@ -54,7 +54,7 @@ def test_code_formatter__empty_str(monkeypatch):
         return ""
 
     monkeypatch.setitem(CODEFORMATTERS, "lang", fmt_func)
-    text = mdformat.text(
+    text = md_kx.text(
         dedent(
             """\
     ~~~lang
@@ -78,7 +78,7 @@ def test_code_formatter__no_end_newline(monkeypatch):
         return "dummy\ndum"
 
     monkeypatch.setitem(CODEFORMATTERS, "lang", fmt_func)
-    text = mdformat.text(
+    text = md_kx.text(
         dedent(
             """\
     ```lang
@@ -102,7 +102,7 @@ def test_code_formatter__interface(monkeypatch):
         return info + code * 2
 
     monkeypatch.setitem(CODEFORMATTERS, "lang", fmt_func)
-    text = mdformat.text(
+    text = md_kx.text(
         dedent(
             """\
     ```    lang  long
@@ -129,7 +129,7 @@ def test_single_token_extension(monkeypatch):
     """Test the front matter plugin, as a single token extension example."""
     plugin_name = "text_editor"
     monkeypatch.setitem(PARSER_EXTENSIONS, plugin_name, TextEditorPlugin)
-    text = mdformat.text(
+    text = md_kx.text(
         dedent(
             """\
     # Example Heading
@@ -151,7 +151,7 @@ def test_single_token_extension(monkeypatch):
 def test_table(monkeypatch):
     """Test the table plugin, as a multi-token extension example."""
     monkeypatch.setitem(PARSER_EXTENSIONS, "table", TablePlugin)
-    text = mdformat.text(
+    text = md_kx.text(
         dedent(
             """\
     |a|b|
@@ -196,7 +196,7 @@ def test_cli_options_group(monkeypatch, tmp_path):
     """
     monkeypatch.setitem(PARSER_EXTENSIONS, "table", ExamplePluginWithGroupedCli)
     file_path = tmp_path / "test_markdown.md"
-    conf_path = tmp_path / ".mdformat.toml"
+    conf_path = tmp_path / ".md_kx.toml"
     file_path.touch()
     conf_path.write_text(
         """\
@@ -227,7 +227,7 @@ dont_override_toml = 'dont override this with None if CLI opt not given'
     posargs = call_[0]
     # Options is the second positional arg of MDRender.render
     opts = posargs[1]
-    table_opts = opts["mdformat"]["plugin"]["table"]
+    table_opts = opts["md_kx"]["plugin"]["table"]
     assert table_opts["o1"] == "other"
     assert table_opts["o2"] == "a"
     assert table_opts["arg_name"] == 4
@@ -282,7 +282,7 @@ def test_cli_options_group__no_toml(monkeypatch, tmp_path):
     posargs = call_[0]
     # Options is the second positional arg of MDRender.render
     opts = posargs[1]
-    assert opts["mdformat"]["plugin"]["table"]["o1"] == "other"
+    assert opts["md_kx"]["plugin"]["table"]["o1"] == "other"
 
 
 def test_ast_changing_plugin(monkeypatch, tmp_path):
@@ -320,7 +320,7 @@ def test_code_format_warnings__cli(monkeypatch, tmp_path, capsys):
 def test_code_format_warnings__api(monkeypatch, caplog):
     monkeypatch.setitem(CODEFORMATTERS, "json", JSONFormatterPlugin.format_json)
     assert (
-        mdformat.text("```json\nthis is invalid json\n```\n", codeformatters=("json",))
+        md_kx.text("```json\nthis is invalid json\n```\n", codeformatters=("json",))
         == "```json\nthis is invalid json\n```\n"
     )
     assert (
@@ -364,7 +364,7 @@ def test_postprocess_plugins(monkeypatch):
     prefix_plugin_name = "prefixer"
     monkeypatch.setitem(PARSER_EXTENSIONS, suffix_plugin_name, SuffixPostprocessPlugin)
     monkeypatch.setitem(PARSER_EXTENSIONS, prefix_plugin_name, PrefixPostprocessPlugin)
-    text = mdformat.text(
+    text = md_kx.text(
         dedent(
             """\
             # Example Heading.
@@ -394,9 +394,9 @@ def test_load_entrypoints(tmp_path, monkeypatch):
     # (even though they aren't actual extensions).
     entry_points_path.write_text(
         """\
-[mdformat.parser_extension]
-ext1=mdformat.plugins
-ext2=mdformat.plugins
+[md_kx.parser_extension]
+ext1=md_kx.plugins
+ext2=md_kx.plugins
 """
     )
     metadata_path.write_text(
@@ -410,7 +410,7 @@ Version: 0.3.6
     entrypoints = distro.entry_points
 
     loaded_eps, dist_infos = _load_entrypoints(entrypoints)
-    assert loaded_eps == {"ext1": mdformat.plugins, "ext2": mdformat.plugins}
+    assert loaded_eps == {"ext1": md_kx.plugins, "ext2": md_kx.plugins}
     assert dist_infos == {"mdformat-gfm": ("0.3.6", ["ext1", "ext2"])}
 
 
@@ -437,7 +437,7 @@ def test_no_codeformatters__toml(tmp_path, monkeypatch):
 
     # With TOML
     file1_path.write_text(unformatted)
-    config_path = tmp_path / ".mdformat.toml"
+    config_path = tmp_path / ".md_kx.toml"
     config_path.write_text("codeformatters = []")
     assert run((str(tmp_path),), cache_toml=False) == 0
     assert file1_path.read_text() == unformatted
@@ -457,7 +457,7 @@ def test_no_extensions__toml(tmp_path, monkeypatch):
 
     # With TOML
     file1_path.write_text(unformatted)
-    config_path = tmp_path / ".mdformat.toml"
+    config_path = tmp_path / ".md_kx.toml"
     config_path.write_text("extensions = []")
     assert run((str(tmp_path),), cache_toml=False) == 0
     assert file1_path.read_text() == unformatted

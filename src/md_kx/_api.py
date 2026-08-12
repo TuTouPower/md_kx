@@ -6,8 +6,8 @@ from os import PathLike
 from pathlib import Path
 from typing import Any
 
-from mdformat._conf import DEFAULT_OPTS
-from mdformat._util import EMPTY_MAP, NULL_CTX, build_mdit, detect_newline_type
+from md_kx._conf import DEFAULT_OPTS
+from md_kx._util import EMPTY_MAP, NULL_CTX, build_mdit, detect_newline_type
 
 
 def _strip_front_matter(md: str) -> tuple[str, str | None]:
@@ -56,14 +56,14 @@ def text(
 ) -> str:
     """Format a Markdown string."""
     # Lazy import to improve module import time
-    from mdformat.renderer import MDRenderer
+    from md_kx.renderer import MDRenderer
 
     body, front_matter = _strip_front_matter(md)
 
     with _first_pass_contextmanager:
         mdit = build_mdit(
             MDRenderer,
-            mdformat_opts={**options, **{"filename": _filename}},
+            md_kx_opts={**options, **{"filename": _filename}},
             extensions=extensions,
             codeformatters=codeformatters,
         )

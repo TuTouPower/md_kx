@@ -12,9 +12,9 @@ from typing import TYPE_CHECKING, Any, Literal, NamedTuple
 
 from markdown_it.rules_block.html_block import HTML_SEQUENCES
 
-from mdformat import codepoints
-from mdformat._conf import DEFAULT_OPTS
-from mdformat.renderer._util import (
+from md_kx import codepoints
+from md_kx._conf import DEFAULT_OPTS
+from md_kx.renderer._util import (
     decimalify_leading,
     decimalify_trailing,
     escape_asterisk_emphasis,
@@ -30,8 +30,8 @@ from mdformat.renderer._util import (
 )
 
 if TYPE_CHECKING:
-    from mdformat.renderer import RenderTreeNode
-    from mdformat.renderer.typing import Postprocess, Render
+    from md_kx.renderer import RenderTreeNode
+    from md_kx.renderer.typing import Postprocess, Render
 
 LOGGER = logging.getLogger(__name__)
 
@@ -172,9 +172,9 @@ def fence(node: RenderTreeNode, context: RenderContext) -> str:
             code_block = fmt_func(code_block, info_str)
         except Exception:
             # Swallow exceptions so that formatter errors (e.g. due to
-            # invalid code) do not crash mdformat.
+            # invalid code) do not crash md_kx.
             assert node.map is not None, "A fence token must have `map` attribute set"
-            filename = context.options.get("mdformat", {}).get("filename", "")
+            filename = context.options.get("md_kx", {}).get("filename", "")
             warn_msg = (
                 f"Failed formatting content of a {lang} code block "
                 f"(line {node.map[0] + 1} before formatting)"
@@ -392,7 +392,7 @@ def paragraph(node: RenderTreeNode, context: RenderContext) -> str:  # noqa: C90
     text = inline_node.render(context)
 
     if context.do_wrap:
-        wrap_mode = context.options["mdformat"]["wrap"]
+        wrap_mode = context.options["md_kx"]["wrap"]
         if isinstance(wrap_mode, int):
             wrap_mode -= context.env["indent_width"]
             wrap_mode = max(1, wrap_mode)
@@ -490,7 +490,7 @@ def list_item(node: RenderTreeNode, context: RenderContext) -> str:
 def bullet_list(node: RenderTreeNode, context: RenderContext) -> str:
     marker_type = get_list_marker_type(node)
     first_line_indent = " "
-    configured_width = context.options.get("mdformat", {}).get(
+    configured_width = context.options.get("md_kx", {}).get(
         "indent_width", DEFAULT_OPTS["indent_width"]
     )
     if configured_width:
@@ -524,7 +524,7 @@ def bullet_list(node: RenderTreeNode, context: RenderContext) -> str:
 
 
 def ordered_list(node: RenderTreeNode, context: RenderContext) -> str:
-    consecutive_numbering = context.options.get("mdformat", {}).get(
+    consecutive_numbering = context.options.get("md_kx", {}).get(
         "number", DEFAULT_OPTS["number"]
     )
     marker_type = get_list_marker_type(node)
@@ -537,7 +537,7 @@ def ordered_list(node: RenderTreeNode, context: RenderContext) -> str:
         starting_number = 1
     assert isinstance(starting_number, int)
 
-    configured_width = context.options.get("mdformat", {}).get(
+    configured_width = context.options.get("md_kx", {}).get(
         "indent_width", DEFAULT_OPTS["indent_width"]
     )
     if configured_width:
@@ -705,7 +705,7 @@ def _pad_rows(rows: list[list[str]], num_cols: int) -> list[str]:
 
 
 def table(node: RenderTreeNode, context: RenderContext) -> str:
-    table_mode = context.options.get("mdformat", {}).get(
+    table_mode = context.options.get("md_kx", {}).get(
         "table_mode", DEFAULT_OPTS["table_mode"]
     )
 
@@ -772,7 +772,7 @@ class RenderContext(NamedTuple):
 
     @property
     def do_wrap(self) -> bool:
-        wrap_mode = self.options.get("mdformat", {}).get("wrap", DEFAULT_OPTS["wrap"])
+        wrap_mode = self.options.get("md_kx", {}).get("wrap", DEFAULT_OPTS["wrap"])
         return isinstance(wrap_mode, int) or wrap_mode == "no"
 
     def with_default_renderer_for(self, *syntax_names: str) -> RenderContext:

@@ -1,4 +1,4 @@
-from mdformat._util import is_md_equal
+from md_kx._util import is_md_equal
 
 
 def test_is_md_equal():

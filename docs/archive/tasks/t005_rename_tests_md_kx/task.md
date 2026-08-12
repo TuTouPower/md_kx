@@ -1,15 +1,15 @@
 ---
-tid: "t006"
-slug: "rename_cli_docs_md_kx"
-title: "CLI 命令与文档品牌改 md_kx"
-status: "backlog"
-branch: ""
+tid: "t005"
+slug: "rename_tests_md_kx"
+title: "测试层引用 mdformat 改 md_kx"
+status: "done"
+branch: "t005_rename_tests_md_kx"
 worktree: ""
-review_level: "single"
-diff_anchor: ""
+review_level: "full"
+diff_anchor: "71a49c1457fd53f26442fd49a58130b1c257b97b"
 depends_on: ""
 conflicts_with: ""
-note: "entry point、CI、pre-commit hook、README/docs 品牌"
+note: "tests/ 全部 import 与引用同步改名"
 ---
 
 # Task 过程总账
@@ -44,14 +44,13 @@ reviewer 标注为 spec 过时的 finding（实现合理但与 spec 描述不符
 - **仅有 minor（无 critical / important）**：仍建表，逐条处置 minor。
 - **有 critical / important**：建表，逐条填 status（不得留空）。
 
-### Round N (YYYY-MM-DD HH:MM UTC+8)
+### Round 1 场景说明
 
-有 finding 时用本表；每条 finding 一行。
+- **无 finding**：Round 1 code 零 finding、test 零 finding，未进处置表。
 
-|finding_id|severity|status|rationale|fix_ref|
-|------|------|------|------|------|
-|t000_code_f001|critical/important/minor|已修|一句话|文件:行|
-|t000_test_f002|minor|遗留|一句话|pNNN|
+### Round 1 (2026-08-12 12:40 UTC+8)
+
+Round 1 零 finding，未进处置表。
 
 ## 收尾报告
 
@@ -60,8 +59,8 @@ reviewer 标注为 spec 过时的 finding（实现合理但与 spec 描述不符
 ### 验收
 
 - spec：[`spec.md`](spec.md)
-- 结果：全部满足 / 未满足
-- 证据：每条 AC 在 `handoff.json` 的 `ac_evidence` 有对应引用（覆盖闭合门禁强制）；此处写一句话摘要，不复制 AC 正文
+- 结果：全部满足
+- 证据：handoff.json 的 `ac_evidence` 逐条覆盖 AC-001~003（tests 无残留、pytest 全绿、功能测试过）
 
 ### Reviewer verdict
 
@@ -69,15 +68,15 @@ reviewer 标注为 spec 过时的 finding（实现合理但与 spec 描述不符
 
 `full`：
 
-- Round 1 code：PASS / FAIL
-- Round 1 test：PASS / FAIL
+- Round 1 code：PASS
+- Round 1 test：PASS
 
 `single`：
 
-- Round 1 general：PASS / FAIL
+- N/A（review_level=full）
 
 遗留不在此列出——见 `docs/pending/todo/`，本文件处置表的 `fix_ref` 指向对应 `pNNN`。
 
 ### 结果摘要
 
-- 一句话；无额外说明可写「见上」
+tests/ 全部引用从 mdformat 改名 md_kx（import、`.md_kx.toml`、opts 键、CLI 断言）。`test_wrap_paragraphs` 期望因 mdformat→md_kx 短 3 字符致 72 列 wrap 分界右移而更新。全量 pytest 4684 passed。

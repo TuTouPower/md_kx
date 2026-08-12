@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from typing import TYPE_CHECKING
 
-from mdformat.renderer import RenderContext, RenderTreeNode
+from md_kx.renderer import RenderContext, RenderTreeNode
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt

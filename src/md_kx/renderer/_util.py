@@ -6,10 +6,10 @@ import html.entities
 import re
 from typing import TYPE_CHECKING
 
-from mdformat import codepoints
+from md_kx import codepoints
 
 if TYPE_CHECKING:
-    from mdformat.renderer import RenderTreeNode
+    from md_kx.renderer import RenderTreeNode
 
 
 @functools.cache

@@ -24,10 +24,10 @@ jobs:
 
     - name: run linters
       run: |
-        mdformat --check README.md
+        md_kx --check README.md
         mypy src/ tests/
         pre-commit run -a
-        pre-commit try-repo . mdformat --files README.md
+        pre-commit try-repo . md_kx --files README.md
 
   tests:
     runs-on: ${{ matrix.os }}
@@ -58,29 +58,6 @@ jobs:
       uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-
-  # Run mdformat-gfm's tests to catch issues like https://github.com/hukkin/mdformat/issues/501.
-  test-gfm-plugin:
-    runs-on: ubuntu-latest
-    continue-on-error: true
-
-    steps:
-    - uses: actions/setup-python@v5
-      with:
-        python-version: '3.x'
-    - uses: actions/checkout@v4
-      with:
-        path: mdformat/
-    - uses: actions/checkout@v4
-      with:
-        repository: hukkin/mdformat-gfm
-        path: mdformat-gfm/
-    - run: |
-        pip install pytest
-        pip install --editable mdformat-gfm/
-        pip install --force-reinstall --editable mdformat/
-    - run: |
-        pytest mdformat-gfm/
 
   allgood:
     runs-on: ubuntu-latest

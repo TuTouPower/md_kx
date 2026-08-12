@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
     from markdown_it import MarkdownIt
 
-    from mdformat.renderer.typing import Postprocess, Render
+    from md_kx.renderer.typing import Postprocess, Render
 
 
 def _load_entrypoints(
@@ -40,7 +40,7 @@ class ParserExtensionInterface(Protocol):
 
     # A mapping from `RenderTreeNode.type` to a `Render` function that can
     # render the given `RenderTreeNode` type. These override the default
-    # `Render` funcs defined in `mdformat.renderer.DEFAULT_RENDERERS`.
+    # `Render` funcs defined in `md_kx.renderer.DEFAULT_RENDERERS`.
     RENDERERS: Mapping[str, Render]
 
     # A mapping from `RenderTreeNode.type` to a `Postprocess` that does
@@ -53,11 +53,11 @@ class ParserExtensionInterface(Protocol):
 
     @staticmethod
     def add_cli_argument_group(group: argparse._ArgumentGroup) -> None:
-        """Add an argument group to mdformat CLI and add arguments to it.
+        """Add an argument group to md_kx CLI and add arguments to it.
 
         Call `group.add_argument()` to add CLI arguments (signature is
         the same as argparse.ArgumentParser.add_argument). Values will be
-        stored in a mapping under mdit.options["mdformat"]["plugin"][<plugin_id>]
+        stored in a mapping under mdit.options["md_kx"]["plugin"][<plugin_id>]
         where <plugin_id> equals entry point name of the plugin.
 
         The mapping will be merged with values read from TOML config file
@@ -86,7 +86,7 @@ def __getattr__(name: str) -> Mapping[str, Any]:
     """
     if name in {"CODEFORMATTERS", "_CODEFORMATTER_DISTS"}:
         formatters, formatter_dists = _load_entrypoints(
-            importlib.metadata.entry_points(group="mdformat.codeformatter")
+            importlib.metadata.entry_points(group="md_kx.codeformatter")
         )
         # Cache the values in this module for next time, so that `__getattr__`
         # is only called once per `name`.
@@ -96,7 +96,7 @@ def __getattr__(name: str) -> Mapping[str, Any]:
         return formatters if name == "CODEFORMATTERS" else formatter_dists
     if name in {"PARSER_EXTENSIONS", "_PARSER_EXTENSION_DISTS"}:
         extensions, extension_dists = _load_entrypoints(
-            importlib.metadata.entry_points(group="mdformat.parser_extension")
+            importlib.metadata.entry_points(group="md_kx.parser_extension")
         )
         # Cache the value in this module for next time, so that `__getattr__`
         # is only called once per `name`.
