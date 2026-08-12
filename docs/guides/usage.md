@@ -20,8 +20,10 @@ md_kx --version   # → md_kx 1.0.0
 仓库更新后重装：
 
 ```bash
-uv tool install . --force
+uv tool install . --reinstall
 ```
+
+> **注意**：重装必须用 `--reinstall`（implies `--refresh`），不能用 `--force`。`--force` 会命中 uv 构建缓存，装入旧代码——现象是 `md_kx --version` 显示旧版本号但修复不生效。若装完仍见旧行为，检查安装环境：`~/.local/share/uv/tools/md-kx/lib/python*/site-packages/md_kx/renderer/_context.py`，确认含最新改动（如 `lazy table` 关键字），或用 `--reinstall` 强制刷新。
 
 ### 作为 Python 库
 
