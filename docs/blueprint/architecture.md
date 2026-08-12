@@ -18,7 +18,7 @@
 Markdown 文本 → markdown-it-py 解析 → token 流 → renderer 渲染 → 格式化 Markdown 文本
 ```
 
-外部依赖：`markdown-it-py` 负责解析（mdformat 不自行实现解析器），渲染与重排由 `md_kx/renderer/` 完成。
+外部依赖：`markdown-it-py` 负责解析（md_kx 不自行实现解析器），渲染与重排由 `md_kx/renderer/` 完成。
 
 ## 进程 / 边界
 

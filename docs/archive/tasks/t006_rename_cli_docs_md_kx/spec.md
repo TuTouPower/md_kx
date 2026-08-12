@@ -18,7 +18,7 @@ t004 已把包与 entry point 改名 md_kx（CLI 命令 `md_kx`）。本 task �
 
 - src/ 包与 import（t004 已改）
 - tests/（t005 已改）
-- 上游 mdformat-gfm 插件测试（CI 保留，指向上游官方包）
+- 上游 mdformat-gfm 插件测试（用户决策删除——fork 改名后插件 group 为 md_kx.*，mdformat-gfm 不再适用）
 
 ### 验收标准
 

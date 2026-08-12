@@ -146,7 +146,7 @@ def test_mdrenderer_no_finalize(tmp_path):
 def test_import_typing():
     """Try to import md_kx.renderer.typing.
 
-    The module consists of annotation types only, so md_kx never
-    imports it at runtime. This test ensures that it still runs.
+    The module consists of annotation types only, so md_kx never imports
+    it at runtime. This test ensures that it still runs.
     """
     import md_kx.renderer.typing  # noqa: F401

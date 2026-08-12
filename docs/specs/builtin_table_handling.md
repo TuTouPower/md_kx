@@ -5,7 +5,7 @@
 
 ## 行为
 
-mdformat 内置表格解析（markdown-it-py 的 `table` 规则），提供 `table_mode` 配置项（CLI `--table-mode {none,pad,compact}` 或 `.mdformat.toml`）控制表格处理：
+md_kx 内置表格解析（markdown-it-py 的 `table` 规则），提供 `table_mode` 配置项（CLI `--table-mode {none,pad,compact}` 或 `.md_kx.toml`）控制表格处理：
 
 - `none`（默认）：表格内容不被触碰，输出与原输入语义一致（单元格文本、转义管道、对齐语义保留）
 - `pad`：表格单元格补空格对齐（各列等宽）
@@ -21,4 +21,4 @@ mdformat 内置表格解析（markdown-it-py 的 `table` 规则），提供 `tab
 
 ## 实现
 
-`mdformat._util.build_mdit` 总是启用 `ruler.enable("table")`；`mdformat.renderer._context.table` 渲染器按 table_mode 输出（none/compact 紧凑、pad 对齐），`_table_aligns` 读 th token 的 `style:text-align` 保留对齐。`_conf.DEFAULT_OPTS` 默认 `none`。
+`md_kx._util.build_mdit` 总是启用 `ruler.enable("table")`；`md_kx.renderer._context.table` 渲染器按 table_mode 输出（none/compact 紧凑、pad 对齐），`_table_aligns` 读 th token 的 `style:text-align` 保留对齐。`_conf.DEFAULT_OPTS` 默认 `none`。

@@ -82,9 +82,7 @@ def run(cli_args: Sequence[str], cache_toml: bool = True) -> int:  # noqa: C901
             enabled_parserplugins = (
                 md_kx.plugins.PARSER_EXTENSIONS
                 if opts["extensions"] is None
-                else {
-                    k: md_kx.plugins.PARSER_EXTENSIONS[k] for k in opts["extensions"]
-                }
+                else {k: md_kx.plugins.PARSER_EXTENSIONS[k] for k in opts["extensions"]}
             )
         except KeyError as e:
             print_error(
@@ -101,8 +99,7 @@ def run(cli_args: Sequence[str], cache_toml: bool = True) -> int:  # noqa: C901
                 md_kx.plugins.CODEFORMATTERS
                 if opts["codeformatters"] is None
                 else {
-                    k: md_kx.plugins.CODEFORMATTERS[k]
-                    for k in opts["codeformatters"]
+                    k: md_kx.plugins.CODEFORMATTERS[k] for k in opts["codeformatters"]
                 }
             )
         except KeyError as e:
