@@ -1,6 +1,6 @@
 from markdown_it.tree import SyntaxTreeNode
 
-from mdformat.renderer._context import RenderContext
+from md_kx.renderer._context import RenderContext
 
 
 class RenderTreeNode(SyntaxTreeNode):

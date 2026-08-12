@@ -5,8 +5,8 @@ with atheris.instrument_imports():
     import sys
     import warnings
 
-    import mdformat
-    from mdformat._util import is_md_equal
+    import md_kx
+    from md_kx._util import is_md_equal
 
 # Suppress all warnings.
 warnings.simplefilter("ignore")
@@ -18,7 +18,7 @@ def test_one_input(input_bytes: bytes) -> None:
     data = fdp.ConsumeUnicode(sys.maxsize)
 
     try:
-        formatted_data = mdformat.text(data)
+        formatted_data = md_kx.text(data)
     except BaseException:
         handle_err(data)
         raise

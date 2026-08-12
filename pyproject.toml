@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 
 [project]
-name = "mdformat"
+name = "md_kx"
 version = "1.0.0"  # DO NOT EDIT THIS LINE MANUALLY. LET bump2version UTILITY DO IT
 description = "CommonMark compliant Markdown formatter"
 authors = [
@@ -28,13 +28,13 @@ classifiers = [
     "Topic :: Text Processing :: Markup",
     "Typing :: Typed",
 ]
-keywords = ["mdformat", "markdown", "commonmark", "formatter", "pre-commit"]
+keywords = ["md_kx", "markdown", "commonmark", "formatter", "pre-commit"]
 
 [project.urls]
 "Homepage" = "https://github.com/hukkin/mdformat"
 
 [project.scripts]
-mdformat = "mdformat.__main__:run"
+md_kx = "md_kx.__main__:run"
 
 
 [tool.isort]
@@ -44,7 +44,7 @@ force_sort_within_sections = true
 no_lines_before = ["LOCALFOLDER"]
 
 # Configure isort to work without access to site-packages
-known_first_party = ["mdformat", "tests"]
+known_first_party = ["md_kx", "tests"]
 
 # Settings for Black compatibility
 profile = "black"
@@ -100,18 +100,18 @@ commands = [
 ]
 
 [tool.tox.env."hook"]
-description = "test mdformat's own pre-commit hook against the README file"
+description = "test md_kx's own pre-commit hook against the README file"
 skip_install = true
 deps = ["pre-commit"]
 commands = [
-    ["pre-commit", "try-repo", ".", "mdformat", "--files", "README.md"],
+    ["pre-commit", "try-repo", ".", "md_kx", "--files", "README.md"],
 ]
 
 [tool.tox.env."cli"]
-description = "run mdformat's own CLI"
+description = "run md_kx's own CLI"
 deps = []
 commands = [
-    ["mdformat", { replace = "posargs", extend = true }],
+    ["md_kx", { replace = "posargs", extend = true }],
 ]
 
 [tool.tox.env."fuzz"]
@@ -132,25 +132,25 @@ commands = [
 ]
 
 [tool.tox.env."benchmark"]
-description = "benchmark mdformat against local doc files"
+description = "benchmark md_kx against local doc files"
 deps = []
 commands = [
     ["python", "-c", "print('Wrap mode: keep')"],
-    ["python", "-m", "timeit", "from mdformat._cli import run", 'run(["README.md", "--check"])'],
+    ["python", "-m", "timeit", "from md_kx._cli import run", 'run(["README.md", "--check"])'],
     ["python", "-c", "print('Wrap mode: 50')"],
-    ["python", "-m", "timeit", "from mdformat._cli import run", 'run(["README.md", "--check", "--wrap", "50"])'],
+    ["python", "-m", "timeit", "from md_kx._cli import run", 'run(["README.md", "--check", "--wrap", "50"])'],
 ]
 
 [tool.tox.env."benchmark-import"]
-description = "Measure module import times. Tox sends mdformat output to stderr, so to filter use e.g. `tox -e benchmark-import 2> >(grep mdformat)`."
+description = "Measure module import times. Tox sends md_kx output to stderr, so to filter use e.g. `tox -e benchmark-import 2> >(grep md_kx)`."
 deps = []
 commands = [
-    ["python", "-X", "importtime", "-m", "mdformat", "--version"],
+    ["python", "-X", "importtime", "-m", "md_kx", "--version"],
 ]
 
 
 [tool.coverage.run]
-source = ["mdformat"]
+source = ["md_kx"]
 plugins = ["covdefaults"]
 
 

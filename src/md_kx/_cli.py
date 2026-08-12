@@ -11,10 +11,10 @@ import shutil
 import sys
 import textwrap
 
-import mdformat
-from mdformat._conf import DEFAULT_OPTS, InvalidConfError, read_toml_opts
-from mdformat._util import detect_newline_type, is_md_equal
-import mdformat.plugins
+import md_kx
+from md_kx._conf import DEFAULT_OPTS, InvalidConfError, read_toml_opts
+from md_kx._util import detect_newline_type, is_md_equal
+import md_kx.plugins
 
 
 class RendererWarningPrinter(logging.Handler):
@@ -25,9 +25,9 @@ class RendererWarningPrinter(logging.Handler):
 
 def run(cli_args: Sequence[str], cache_toml: bool = True) -> int:  # noqa: C901
     arg_parser = make_arg_parser(
-        mdformat.plugins._PARSER_EXTENSION_DISTS,
-        mdformat.plugins._CODEFORMATTER_DISTS,
-        mdformat.plugins.PARSER_EXTENSIONS,
+        md_kx.plugins._PARSER_EXTENSION_DISTS,
+        md_kx.plugins._CODEFORMATTER_DISTS,
+        md_kx.plugins.PARSER_EXTENSIONS,
     )
     cli_opts = {
         k: v for k, v in vars(arg_parser.parse_args(cli_args)).items() if v is not None
@@ -72,7 +72,7 @@ def run(cli_args: Sequence[str], cache_toml: bool = True) -> int:  # noqa: C901
                 print_error(
                     "'exclude' patterns are only available on Python 3.13+.",
                     paragraphs=[
-                        "Please remove the 'exclude' list from your .mdformat.toml"
+                        "Please remove the 'exclude' list from your .md_kx.toml"
                         " or upgrade Python version."
                     ],
                 )
@@ -80,10 +80,10 @@ def run(cli_args: Sequence[str], cache_toml: bool = True) -> int:  # noqa: C901
 
         try:
             enabled_parserplugins = (
-                mdformat.plugins.PARSER_EXTENSIONS
+                md_kx.plugins.PARSER_EXTENSIONS
                 if opts["extensions"] is None
                 else {
-                    k: mdformat.plugins.PARSER_EXTENSIONS[k] for k in opts["extensions"]
+                    k: md_kx.plugins.PARSER_EXTENSIONS[k] for k in opts["extensions"]
                 }
             )
         except KeyError as e:
@@ -98,10 +98,10 @@ def run(cli_args: Sequence[str], cache_toml: bool = True) -> int:  # noqa: C901
             return 1
         try:
             enabled_codeformatters = (
-                mdformat.plugins.CODEFORMATTERS
+                md_kx.plugins.CODEFORMATTERS
                 if opts["codeformatters"] is None
                 else {
-                    k: mdformat.plugins.CODEFORMATTERS[k]
+                    k: md_kx.plugins.CODEFORMATTERS[k]
                     for k in opts["codeformatters"]
                 }
             )
@@ -127,9 +127,9 @@ def run(cli_args: Sequence[str], cache_toml: bool = True) -> int:  # noqa: C901
             original_str = sys.stdin.buffer.read().decode()
 
         # Lazy import to improve module import time
-        from mdformat.renderer import LOGGER as RENDERER_LOGGER
+        from md_kx.renderer import LOGGER as RENDERER_LOGGER
 
-        formatted_str = mdformat.text(
+        formatted_str = md_kx.text(
             original_str,
             options=opts,
             extensions=enabled_parserplugins,
@@ -166,7 +166,7 @@ def run(cli_args: Sequence[str], cache_toml: bool = True) -> int:  # noqa: C901
                     f'Could not format "{path_str}".',
                     paragraphs=[
                         "Formatted Markdown renders to different HTML than input Markdown. "  # noqa: E501
-                        "This is a bug in mdformat or one of its installed plugins. "
+                        "This is a bug in md_kx or one of its installed plugins. "
                         "Please retry without any plugins installed. "
                         "If this error persists, "
                         "report an issue including the input Markdown "
@@ -198,7 +198,7 @@ def validate_wrap_arg(value: str) -> str | int:
 def make_arg_parser(
     parser_extension_dists: Mapping[str, tuple[str, list[str]]],
     codeformatter_dists: Mapping[str, tuple[str, list[str]]],
-    parser_extensions: Mapping[str, mdformat.plugins.ParserExtensionInterface],
+    parser_extensions: Mapping[str, md_kx.plugins.ParserExtensionInterface],
 ) -> argparse.ArgumentParser:
     epilog = get_plugin_info_str(parser_extension_dists, codeformatter_dists)
     parser = argparse.ArgumentParser(
@@ -217,7 +217,7 @@ def make_arg_parser(
         dest="validate",
         help="do not validate that the rendered HTML is consistent",
     )
-    version_str = f"mdformat {mdformat.__version__}"
+    version_str = f"md_kx {md_kx.__version__}"
     plugin_version_str = get_plugin_version_str(
         {**parser_extension_dists, **codeformatter_dists}
     )

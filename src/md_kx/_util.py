@@ -6,7 +6,7 @@ import re
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Literal
 
-import mdformat.plugins
+import md_kx.plugins
 
 if TYPE_CHECKING:
     from markdown_it import MarkdownIt
@@ -22,7 +22,7 @@ RE_HTML_END_SPACE_SUFFIX = re.compile(r"(</[a-zA-Z][-a-zA-Z0-9]*>) ")
 def build_mdit(
     renderer_cls: Any,
     *,
-    mdformat_opts: Mapping[str, Any] = EMPTY_MAP,
+    md_kx_opts: Mapping[str, Any] = EMPTY_MAP,
     extensions: Iterable[str] = (),
     codeformatters: Iterable[str] = (),
 ) -> MarkdownIt:
@@ -30,7 +30,7 @@ def build_mdit(
     from markdown_it import MarkdownIt
 
     mdit = MarkdownIt(renderer_cls=renderer_cls)
-    mdit.options["mdformat"] = mdformat_opts
+    mdit.options["md_kx"] = md_kx_opts
     # store reference labels in link/image tokens
     mdit.options["store_labels"] = True
 
@@ -42,13 +42,13 @@ def build_mdit(
 
     mdit.options["parser_extension"] = []
     for name in extensions:
-        plugin = mdformat.plugins.PARSER_EXTENSIONS[name]
+        plugin = md_kx.plugins.PARSER_EXTENSIONS[name]
         if plugin not in mdit.options["parser_extension"]:
             mdit.options["parser_extension"].append(plugin)
             plugin.update_mdit(mdit)
 
     mdit.options["codeformatters"] = {
-        lang: mdformat.plugins.CODEFORMATTERS[lang] for lang in codeformatters
+        lang: md_kx.plugins.CODEFORMATTERS[lang] for lang in codeformatters
     }
 
     return mdit
@@ -82,7 +82,7 @@ def is_md_equal(
     from markdown_it.renderer import RendererHTML
 
     html_texts = {}
-    mdit = build_mdit(RendererHTML, mdformat_opts=options, extensions=extensions)
+    mdit = build_mdit(RendererHTML, md_kx_opts=options, extensions=extensions)
     for key, text in [("md1", md1), ("md2", md2)]:
         html = mdit.render(text)
 

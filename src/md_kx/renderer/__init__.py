@@ -15,13 +15,13 @@ import string
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any
 
-from mdformat.renderer._context import DEFAULT_RENDERERS, WRAP_POINT, RenderContext
-from mdformat.renderer._tree import RenderTreeNode
+from md_kx.renderer._context import DEFAULT_RENDERERS, WRAP_POINT, RenderContext
+from md_kx.renderer._tree import RenderTreeNode
 
 if TYPE_CHECKING:
     from markdown_it.token import Token
 
-    from mdformat.renderer.typing import Postprocess
+    from md_kx.renderer.typing import Postprocess
 
 LOGGER = logging.getLogger(__name__)
 

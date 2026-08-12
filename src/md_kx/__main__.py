@@ -1,11 +1,11 @@
 import sys
 from typing import NoReturn
 
-import mdformat._cli
+import md_kx._cli
 
 
 def run() -> NoReturn:
-    exit_code = mdformat._cli.run(sys.argv[1:])
+    exit_code = md_kx._cli.run(sys.argv[1:])
     sys.exit(exit_code)
 
 
