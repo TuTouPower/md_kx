@@ -5,13 +5,19 @@ import md_kx
 from md_kx._cli import run
 from md_kx._util import is_md_equal
 
-LIST_TABLE_MD = "2. `review_level` 按风险判：\n|level|适用|\n|------|------|\n|`full`|安全|\n"
+LIST_TABLE_MD = (
+    "2. `review_level` 按风险判：\n|level|适用|\n|------|------|\n|`full`|安全|\n"
+)
 
 
 def test_list_table_validate_passes():
     """AC-001/002：列表项后 0 缩进表格行格式化后 validate 通过，HTML 不变。"""
-    formatted = md_kx.text(LIST_TABLE_MD, options={"table_mode": "compact", "number": True})
-    assert is_md_equal(LIST_TABLE_MD, formatted, options={"table_mode": "compact", "number": True})
+    formatted = md_kx.text(
+        LIST_TABLE_MD, options={"table_mode": "compact", "number": True}
+    )
+    assert is_md_equal(
+        LIST_TABLE_MD, formatted, options={"table_mode": "compact", "number": True}
+    )
     # 表格行不被拉进列表内部缩进
     lines = formatted.split("\n")
     assert lines[1].lstrip() == lines[1]  # |level| 行 0 缩进
@@ -99,5 +105,12 @@ def test_pipe_in_list_blockquote_no_crash():
     assert "> |baz" in out
 
 
-
-
+def test_multiline_paragraph_lazy_table_no_crash():
+    """多行列表项段落 + 紧接 0 缩进表格不崩溃、validate 通过。"""
+    md = "2. `review_level`\n按风险判：\n|level|适用|\n|------|------|\n|`full`|安全|\n"
+    out = md_kx.text(md, options={"number": True})
+    assert is_md_equal(md, out, options={"number": True})
+    # 段落续行正常缩进，表格行保持 0 缩进
+    lines = out.split("\n")
+    assert lines[1].startswith("   按风险判：")
+    assert lines[2].lstrip() == lines[2]

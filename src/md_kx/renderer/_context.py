@@ -534,7 +534,9 @@ def bullet_list(node: RenderTreeNode, context: RenderContext) -> str:
                 if previous_line_ends_in_zero:
                     formatted_lines.append(line.rstrip("\x00"))
                 else:
-                    formatted_lines.append(f"{indent}{line}" if line else "")
+                    formatted_lines.append(
+                        f"{indent}{line.rstrip(chr(0))}" if line else ""
+                    )
                 previous_line_ends_in_zero = line.endswith("\x00")
 
             text += "\n".join(formatted_lines)
@@ -631,7 +633,9 @@ def ordered_list(node: RenderTreeNode, context: RenderContext) -> str:
                 if previous_line_ends_in_zero:
                     formatted_lines.append(line.rstrip("\x00"))
                 else:
-                    formatted_lines.append(" " * indent_width + line if line else "")
+                    formatted_lines.append(
+                        " " * indent_width + line.rstrip(chr(0)) if line else ""
+                    )
                 previous_line_ends_in_zero = line.endswith("\x00")
 
             text += "\n".join(formatted_lines)
