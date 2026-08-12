@@ -108,6 +108,19 @@ def hardbreak(node: RenderTreeNode, context: RenderContext) -> str:
 def softbreak(node: RenderTreeNode, context: RenderContext) -> str:
     if context.do_wrap and _in_block("paragraph", node):
         return WRAP_POINT
+    # A softbreak followed by a `|`-prefixed line is a lazy table row (see
+    # p006): indenting it would re-parse it as a nested table. Mark it so
+    # the list renderer leaves it at zero indent.
+    nxt = node.next_sibling
+    if (
+        nxt is not None
+        and nxt.content.lstrip().startswith("|")
+        and node.parent is not None
+        and node.parent.parent is not None
+        and node.parent.parent.parent is not None
+        and node.parent.parent.parent.type == "list_item"
+    ):
+        return "\x00\n"
     return "\n"
 
 
@@ -508,13 +521,21 @@ def bullet_list(node: RenderTreeNode, context: RenderContext) -> str:
             formatted_lines = []
             line_iterator = iter(list_item.split("\n"))
             first_line = next(line_iterator)
+            previous_line_ends_in_zero = first_line.endswith("\x00")
+            first_line = first_line.rstrip("\x00")
             formatted_lines.append(
                 f"{marker_type}{first_line_indent}{first_line}"
                 if first_line
                 else marker_type
             )
             for line in line_iterator:
-                formatted_lines.append(f"{indent}{line}" if line else "")
+                # A line whose previous softbreak carried a `\x00` marker is
+                # a lazy table row (see p006); leave it at zero indent.
+                if previous_line_ends_in_zero:
+                    formatted_lines.append(line.rstrip("\x00"))
+                else:
+                    formatted_lines.append(f"{indent}{line}" if line else "")
+                previous_line_ends_in_zero = line.endswith("\x00")
 
             text += "\n".join(formatted_lines)
             if child_idx != len(node.children) - 1:
@@ -561,6 +582,8 @@ def ordered_list(node: RenderTreeNode, context: RenderContext) -> str:
             formatted_lines = []
             line_iterator = iter(list_item_text.split("\n"))
             first_line = next(line_iterator)
+            previous_line_ends_in_zero = first_line.endswith("\x00")
+            first_line = first_line.rstrip("\x00")
             if consecutive_numbering:
                 # Prefix first line of the list item with consecutive numbering,
                 # padded with zeros to make all markers of even length.
@@ -603,7 +626,13 @@ def ordered_list(node: RenderTreeNode, context: RenderContext) -> str:
                         else other_item_marker
                     )
             for line in line_iterator:
-                formatted_lines.append(" " * indent_width + line if line else "")
+                # A line whose previous softbreak carried a `\x00` marker is
+                # a lazy table row (see p006); leave it at zero indent.
+                if previous_line_ends_in_zero:
+                    formatted_lines.append(line.rstrip("\x00"))
+                else:
+                    formatted_lines.append(" " * indent_width + line if line else "")
+                previous_line_ends_in_zero = line.endswith("\x00")
 
             text += "\n".join(formatted_lines)
             if list_item_index != len(node.children) - 1:

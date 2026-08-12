@@ -1,0 +1,20 @@
+{
+  "tid": "t007",
+  "attempt": 1,
+  "execution_id": "66f0b0ea20e34da29a08bbfe3d0e9faf",
+  "status": "done",
+  "branch": "t007_fix_list_table_lazy_continuation",
+  "base_sha": "b3e6991001d6b136b35e9a6b4c2b584130abde64",
+  "tests": "pytest tests -q：4695 passed, 5 skipped",
+  "blackbox": "md_kx --check README.md 通过；复现文件格式化 exit 0（表格行 0 缩进保留）",
+  "review": "Round 5 code PASS / test PASS",
+  "ac_evidence": {
+    "AC-001": ["tests/test_list_table.py::test_list_table_validate_passes 通过", "tests/test_list_table.py::test_list_table_cli_exit_zero 通过"],
+    "AC-002": ["tests/test_list_table.py::test_list_table_validate_passes 通过（is_md_equal True + 0 缩进行断言）"],
+    "AC-003": ["tests/test_list_table.py::test_none_mode_escape_preserved 通过"],
+    "AC-004": ["tests/test_list_table.py::test_table_modes_unchanged 通过", "tests/test_list_table.py::test_nested_table_in_list_kept 通过"],
+    "AC-005": ["tests/test_list_table.py::test_multiline_list_item_unchanged 通过"]
+  },
+  "pending": ["p006"],
+  "findings": ["d005", "d006"]
+}
