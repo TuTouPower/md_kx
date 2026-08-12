@@ -29,6 +29,10 @@ pipx install md_kx
 
 <!-- end installing -->
 
+For the full user guide (new fork features, config file, Python API,
+pre-commit hook), see [`docs/guides/usage.md`](docs/guides/usage.md);
+for the formatting style reference, see [`docs/guides/style.md`](docs/guides/style.md).
+
 <!-- start cli-usage -->
 
 ## Command line usage
