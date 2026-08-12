@@ -1,10 +1,9 @@
 <div align="center">
 
-[![Build Status](https://github.com/hukkin/mdformat/actions/workflows/tests.yaml/badge.svg?branch=master)](https://github.com/hukkin/mdformat/actions?query=workflow%3ATests+branch%3Amaster+event%3Apush)
-[![codecov.io](https://codecov.io/gh/hukkin/mdformat/branch/master/graph/badge.svg)](https://codecov.io/gh/hukkin/mdformat)
-[![PyPI version](https://img.shields.io/pypi/v/mdformat)](https://pypi.org/project/mdformat)
+[![Build Status](https://github.com/TuTouPower/md_kx/actions/workflows/tests.yaml/badge.svg?branch=main)](https://github.com/TuTouPower/md_kx/actions/workflows/tests.yaml)
+[![PyPI version](https://img.shields.io/pypi/v/md_kx)](https://pypi.org/project/md_kx)
 
-# ![mdformat](https://raw.githubusercontent.com/hukkin/mdformat/master/docs/_static/logo.svg)
+# ![md_kx](assets/logo.svg)
 
 > CommonMark compliant Markdown formatter
 
