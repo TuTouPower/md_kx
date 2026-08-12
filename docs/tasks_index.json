@@ -2,5 +2,51 @@
     "generated_by": "scripts/repo_template/task.py",
     "authority": "docs/tasks/{tid}_{slug}/task.md front matter",
     "workspace": ".",
-    "tasks": []
+    "tasks": [
+        {
+            "tid": "t004",
+            "slug": "rename_package_md_kx",
+            "title": "重命名包 mdformat 为 md_kx",
+            "status": "backlog",
+            "branch": "",
+            "worktree": "",
+            "review_level": "full",
+            "diff_anchor": "",
+            "depends_on": "",
+            "conflicts_with": "",
+            "schedule_status": "",
+            "note": "fork 改包名：src 目录、import、pyproject、bumpversion",
+            "dir": "docs/tasks/t004_rename_package_md_kx"
+        },
+        {
+            "tid": "t005",
+            "slug": "rename_tests_md_kx",
+            "title": "测试层引用 mdformat 改 md_kx",
+            "status": "backlog",
+            "branch": "",
+            "worktree": "",
+            "review_level": "full",
+            "diff_anchor": "",
+            "depends_on": "",
+            "conflicts_with": "",
+            "schedule_status": "",
+            "note": "tests/ 全部 import 与引用同步改名",
+            "dir": "docs/tasks/t005_rename_tests_md_kx"
+        },
+        {
+            "tid": "t006",
+            "slug": "rename_cli_docs_md_kx",
+            "title": "CLI 命令与文档品牌改 md_kx",
+            "status": "backlog",
+            "branch": "",
+            "worktree": "",
+            "review_level": "single",
+            "diff_anchor": "",
+            "depends_on": "",
+            "conflicts_with": "",
+            "schedule_status": "",
+            "note": "entry point、CI、pre-commit hook、README/docs 品牌",
+            "dir": "docs/tasks/t006_rename_cli_docs_md_kx"
+        }
+    ]
 }
