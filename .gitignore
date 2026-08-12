@@ -154,8 +154,8 @@ docs/archive/reviews/review_*/_meta/
 # 模板：并行调度账本，运行态不入库
 docs/runtime/
 
-# 模板：消费项目本地同步状态（init 生成；各消费仓自行跟踪）
-.agents/skills/repo-template-sync/sync_state.json
+# 模板：CommandCode 本地运行态
+.commandcode/
 
 # uv 运行生成锁文件（项目用 tox/pip 管理，不提交）
 uv.lock
