@@ -71,7 +71,7 @@ If a file is not properly formatted, the exit code will be non-zero.
 
 ```console
 foo@bar:~$ md_kx --help
-usage: md_kx [-h] [--check] [--no-validate] [--version] [--number]
+usage: md_kx [-h] [--check] [--no-validate] [--version] [--commit] [--number]
              [--wrap {keep,no,INTEGER}] [--end-of-line {lf,crlf,keep}]
              [--indent-width INTEGER] [--table-mode {compact,spaced,pad}]
              [--exclude PATTERN] [--extensions EXTENSION]
@@ -88,6 +88,8 @@ options:
   --check               do not apply changes to files
   --no-validate         do not validate that the rendered HTML is consistent
   --version             show program's version number and exit
+  --commit              print the git commit id this build was made from and
+                        exit
   --number              apply consecutive numbering to ordered lists
   --wrap {keep,no,INTEGER}
                         paragraph word wrap mode (default: keep)

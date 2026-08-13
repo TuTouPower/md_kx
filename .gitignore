@@ -159,3 +159,6 @@ docs/runtime/
 
 # uv 运行生成锁文件（项目用 tox/pip 管理，不提交）
 uv.lock
+
+# 构建时注入的 commit 信息（scripts/update_global.sh 生成）
+src/md_kx/_build_meta.py

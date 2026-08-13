@@ -17,13 +17,19 @@ uv tool install .
 md_kx --version   # → md_kx 1.0.0
 ```
 
-仓库更新后重装：
+仓库更新后重装（**开发完成 → 全局更新**）：
 
 ```bash
-uv tool install . --reinstall
+bash scripts/update_global.sh
 ```
 
-> **注意**：重装必须用 `--reinstall`（implies `--refresh`），不能用 `--force`。`--force` 会命中 uv 构建缓存，装入旧代码——现象是 `md_kx --version` 显示旧版本号但修复不生效。若装完仍见旧行为，检查安装环境：`~/.local/share/uv/tools/md-kx/lib/python*/site-packages/md_kx/renderer/_context.py`，确认含最新改动（如 `lazy table` 关键字），或用 `--reinstall` 强制刷新。
+脚本执行三步：重新打包（`uv build` → `dist/`）→ `uv tool install . --reinstall` 更新全局 → 自动验证（`--table-mode` 合法值与默认风格、行为冒烟、已装文件内容检查），任一项不符即失败退出。
+
+> **场景区分**：
+> - **开发测试**：用仓库内 `.venv`（editable 安装，改动即时生效），不要跑本脚本。
+> - **开发完成 → 全局更新**：跑 `bash scripts/update_global.sh`。全局 `md_kx` 与仓库 `.venv` 是两个独立环境，改完代码必须重装全局才会生效。
+>
+> **注意**：重装必须用 `--reinstall`（implies `--refresh`），不能用 `--force`。`--force` 会命中 uv 构建缓存，装入旧代码——现象是 `md_kx --version` 显示旧版本号但修复不生效。脚本已内置该行为与验证门禁。
 
 ### 作为 Python 库
 

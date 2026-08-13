@@ -34,6 +34,10 @@ def run(cli_args: Sequence[str], cache_toml: bool = True) -> int:  # noqa: C901
     }
     cli_core_opts, cli_plugin_opts = separate_core_and_plugin_opts(cli_opts)
 
+    if cli_opts.get("commit"):
+        print(_build_commit())
+        return 0
+
     if not cli_opts["paths"]:
         print_paragraphs(["No files have been passed in. Doing nothing."])
         return 0
@@ -221,6 +225,11 @@ def make_arg_parser(
     if plugin_version_str:
         version_str += f" ({plugin_version_str})"
     parser.add_argument("--version", action="version", version=version_str)
+    parser.add_argument(
+        "--commit",
+        action="store_true",
+        help="print the git commit id this build was made from and exit",
+    )
     parser.add_argument(
         "--number",
         action="store_const",
@@ -480,6 +489,20 @@ def get_plugin_version_str(dist_map: Mapping[str, tuple[str, list[str]]]) -> str
     return ", ".join(
         f"{dist_name} {dist_info[0]}" for dist_name, dist_info in dist_map.items()
     )
+
+
+def _build_commit() -> str:
+    """Return the git commit id this build was made from.
+
+    The id is injected at build time by `scripts/update_global.sh` into
+    `md_kx/_build_meta.py` (a git-ignored generated file). A source tree
+    or editable install without that file reports "unknown".
+    """
+    try:
+        from md_kx import _build_meta
+    except ImportError:
+        return "unknown"
+    return getattr(_build_meta, "BUILD_COMMIT", "unknown")
 
 
 def get_source_file_and_line(obj: object) -> tuple[str, int]:
