@@ -245,16 +245,21 @@ Can you see it?
 
 ### 表格
 
-默认 `table_mode = none`，表格内容不被触碰。`pad` 模式单元格等宽对齐、分隔行用 `---` 对齐；`compact` 模式保持紧凑。对齐冒号（`:---` / `:---:` / `---:`）在两种模式下均保留。
+默认 `table_mode = spaced`，单元格两侧各一个空格、不按列对齐。`compact` 单元格两侧零空格；`pad` 按列补齐、外层竖线对齐（含分隔行）。对齐冒号（`:---` / `:---:` / `---:`）在三种风格下均保留。
 
 ```markdown
+# compact
+|name|value|
+|---|---|
+|a|1|
+
+# spaced（默认）
+| name | value |
+| --- | --- |
+| a | 1 |
+
 # pad
 | name   | value |
 | ------ | ----- |
 | a      | 1     |
-
-# compact
-| name | value |
-| --- | --- |
-| a | 1 |
 ```

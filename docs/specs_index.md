@@ -6,4 +6,4 @@
 |------|------|------|
 |front_matter_preserve|t001|2026-08-11|
 |unified_indent_width|t002|2026-08-11|
-|builtin_table_handling|t003|2026-08-12|
+|builtin_table_handling|t008（supersedes t003）|2026-08-13|

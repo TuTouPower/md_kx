@@ -73,7 +73,7 @@ If a file is not properly formatted, the exit code will be non-zero.
 foo@bar:~$ md_kx --help
 usage: md_kx [-h] [--check] [--no-validate] [--version] [--number]
              [--wrap {keep,no,INTEGER}] [--end-of-line {lf,crlf,keep}]
-             [--indent-width INTEGER] [--table-mode {none,pad,compact}]
+             [--indent-width INTEGER] [--table-mode {compact,spaced,pad}]
              [--exclude PATTERN] [--extensions EXTENSION]
              [--codeformatters LANGUAGE]
              [paths ...]
@@ -96,8 +96,10 @@ options:
   --indent-width INTEGER
                         unified indentation width for nested lists (default:
                         marker-aligned)
-  --table-mode {none,pad,compact}
-                        table handling mode (default: none)
+  --table-mode {compact,spaced,pad}
+                        table output style: compact (no padding), spaced (one
+                        space each side), pad (column-aligned) (default:
+                        spaced)
   --exclude PATTERN     exclude files that match the Unix-style glob pattern
                         (multiple allowed)
   --extensions EXTENSION
