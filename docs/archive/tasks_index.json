@@ -107,6 +107,21 @@
             "schedule_status": "",
             "note": "来自 p006；enable table 后 lazy continuation 解析不一致",
             "dir": "docs/archive/tasks/t007_fix_list_table_lazy_continuation"
+        },
+        {
+            "tid": "t008",
+            "slug": "table_three_output_styles",
+            "title": "表格三种输出风格重定义",
+            "status": "done",
+            "branch": "t008_table_three_output_styles",
+            "worktree": "",
+            "review_level": "full",
+            "diff_anchor": "d00127287022ce001bcacb946562d71a6c2dca45",
+            "depends_on": "",
+            "conflicts_with": "",
+            "schedule_status": "",
+            "note": "",
+            "dir": "docs/archive/tasks/t008_table_three_output_styles"
         }
     ]
 }
