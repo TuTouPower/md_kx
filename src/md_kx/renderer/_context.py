@@ -691,45 +691,58 @@ def _table_aligns(node: RenderTreeNode) -> list[str]:
 
 
 def _align_marker(align: str, width: int) -> str:
+    """Build a separator marker of the given total width (width >= 3).
+
+    Alignment colons are kept at their edge positions; the dashes stretch
+    to fill the width.
+    """
     if align == "center":
-        return ":" + "-" * width + ":"
+        return ":" + "-" * (width - 2) + ":"
     if align == "right":
-        return "-" * width + ":"
+        return "-" * (width - 1) + ":"
     if align == "left":
-        return ":" + "-" * width
+        return ":" + "-" * (width - 1)
     return "-" * width
 
 
-def _separator_row(
-    aligns: list[str], num_cols: int, widths: list[int] | None = None
-) -> str:
-    """Build the header separator row with alignment colons."""
+def _fixed_marker(align: str) -> str:
+    """Fixed-length separator marker (used by compact / spaced)."""
+    if align == "center":
+        return ":---:"
+    if align == "right":
+        return "---:"
+    if align == "left":
+        return ":---"
+    return "---"
+
+
+def _min_marker_width(align: str) -> int:
+    """Minimum separator marker width that keeps the alignment colons."""
+    if align == "center":
+        return 5
+    if align in ("left", "right"):
+        return 4
+    return 3
+
+
+def _separator_row(aligns: list[str], num_cols: int, widths: list[int] | None = None) -> list[str]:
+    """Build the header separator cells with alignment colons.
+
+    `widths=None` returns fixed-length markers; a `widths` list returns
+    markers stretched to the per-column width (pad style).
+    """
     sep_cells = []
     for i in range(num_cols):
         align = aligns[i] if i < len(aligns) else "none"
         if widths is None:
-            # compact: fixed-length marker
-            if align == "center":
-                sep_cells.append(":---:")
-            elif align == "right":
-                sep_cells.append("---:")
-            elif align == "left":
-                sep_cells.append(":---")
-            else:
-                sep_cells.append("---")
+            sep_cells.append(_fixed_marker(align))
         else:
-            # pad: marker aligned to the column width
             sep_cells.append(_align_marker(align, max(widths[i], 3)))
-    return "| " + " | ".join(sep_cells) + " |"
+    return sep_cells
 
 
-def _pad_rows(rows: list[list[str]], num_cols: int) -> list[str]:
-    """Render rows with cells padded to the widest in each column."""
-    widths = [0] * num_cols
-    for row in rows:
-        for i, cell in enumerate(row):
-            if i < num_cols:
-                widths[i] = max(widths[i], len(cell))
+def _pad_rows(rows: list[list[str]], num_cols: int, widths: list[int]) -> list[str]:
+    """Render rows padded to the per-column widths (outer pipes aligned)."""
     lines = []
     for row in rows:
         padded = [cell.ljust(widths[i]) for i, cell in enumerate(row[:num_cols])]
@@ -749,12 +762,26 @@ def table(node: RenderTreeNode, context: RenderContext) -> str:
     aligns = _table_aligns(node)
     num_cols = max(len(r) for r in rows)
 
-    if table_mode == "pad":
-        lines = _pad_rows(rows, num_cols)
-    else:
+    if table_mode == "compact":
+        lines = ["|" + "|".join(row) + "|" for row in rows]
+        sep = "|" + "|".join(_separator_row(aligns, num_cols)) + "|"
+    elif table_mode == "pad":
+        widths = [
+            _min_marker_width(aligns[i] if i < len(aligns) else "none")
+            for i in range(num_cols)
+        ]
+        for row in rows:
+            for i, cell in enumerate(row):
+                if i < num_cols:
+                    widths[i] = max(widths[i], len(cell))
+        sep_cells = _separator_row(aligns, num_cols, widths)
+        lines = _pad_rows(rows, num_cols, widths)
+        sep = "| " + " | ".join(sep_cells) + " |"
+    else:  # spaced（默认）
         lines = ["| " + " | ".join(row) + " |" for row in rows]
+        sep = "| " + " | ".join(_separator_row(aligns, num_cols)) + " |"
 
-    lines.insert(1, _separator_row(aligns, num_cols))
+    lines.insert(1, sep)
     return "\n".join(lines)
 
 

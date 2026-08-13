@@ -37,7 +37,7 @@ def build_mdit(
     # Always enable the table rule so tables are parsed as tables rather
     # than falling through to the paragraph pipeline (which would strip
     # escaped pipes and break cell boundaries). The table renderer handles
-    # all three modes, including "none" (pass-through).
+    # all three output styles (compact / spaced / pad).
     mdit.block.ruler.enable("table")
 
     mdit.options["parser_extension"] = []

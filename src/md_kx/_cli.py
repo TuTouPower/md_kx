@@ -246,8 +246,9 @@ def make_arg_parser(
     )
     parser.add_argument(
         "--table-mode",
-        choices=("none", "pad", "compact"),
-        help="table handling mode (default: none)",
+        choices=("compact", "spaced", "pad"),
+        help="table output style: compact (no padding), spaced (one space "
+        "each side), pad (column-aligned) (default: spaced)",
     )
     if sys.version_info >= (3, 13):  # pragma: >=3.13 cover
         parser.add_argument(

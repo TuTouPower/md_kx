@@ -58,7 +58,7 @@ md_kx --check README.md         # 只检查不改写；未格式化则 exit 1
 | `--number` | 有序列表连续编号 | 关 |
 | `--end-of-line {lf,crlf,keep}` | 输出换行符 | `lf` |
 | `--indent-width INTEGER` | 嵌套列表统一缩进宽度 | marker 对齐 |
-| `--table-mode {none,pad,compact}` | 表格处理模式 | `none` |
+| `--table-mode {compact,spaced,pad}` | 表格输出风格 | `spaced` |
 | `--no-validate` | 跳过 HTML 一致性校验 | validate 开 |
 | `--exclude PATTERN` | 排除匹配文件（Python 3.13+） | 空 |
 | `--extensions` / `--codeformatters` | 启用插件扩展 | 全启用 |
@@ -89,19 +89,19 @@ md_kx --indent-width 4 file.md
 
 代码块（\`\`\` 围栏）内容不受影响。
 
-### 表格三态处理
+### 表格三种输出风格
 
 `--table-mode` 控制表格输出：
 
-- `none`（默认）：表格原样保留，内容不被触碰
-- `pad`：单元格补空格对齐（各列等宽）
-- `compact`：保持紧凑，不补空格
+- `compact`：单元格两侧零空格（`|a|b|`）
+- `spaced`（默认）：单元格两侧各一个空格，不按列对齐（`| a | b |`）
+- `pad`：按列补齐，外层竖线对齐（含分隔行）
 
 ```bash
 md_kx --table-mode compact file.md
 ```
 
-三态下转义管道（`\|`）与对齐冒号（`:---`）均保留，二次格式化幂等。
+三种风格下转义管道（`\|`）与对齐冒号（`:---`）均保留，二次格式化幂等。
 
 ## 配置文件 `.md_kx.toml`
 
@@ -116,7 +116,7 @@ number = false        # options: {false, true}
 end_of_line = "lf"    # options: {"lf", "crlf", "keep"}
 validate = true       # options: {false, true}
 indent_width = 0      # options: 非负整数；0 = marker 对齐
-table_mode = "none"   # options: {"none", "pad", "compact"}
+table_mode = "spaced" # options: {"compact", "spaced", "pad"}
 # extensions = ["gfm", "toc"]       # 启用插件扩展
 # codeformatters = ["python"]       # 启用代码格式化插件
 

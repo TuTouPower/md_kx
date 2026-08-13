@@ -13,10 +13,10 @@ LIST_TABLE_MD = (
 def test_list_table_validate_passes():
     """AC-001/002：列表项后 0 缩进表格行格式化后 validate 通过，HTML 不变。"""
     formatted = md_kx.text(
-        LIST_TABLE_MD, options={"table_mode": "compact", "number": True}
+        LIST_TABLE_MD, options={"table_mode": "spaced", "number": True}
     )
     assert is_md_equal(
-        LIST_TABLE_MD, formatted, options={"table_mode": "compact", "number": True}
+        LIST_TABLE_MD, formatted, options={"table_mode": "spaced", "number": True}
     )
     # 表格行不被拉进列表内部缩进
     lines = formatted.split("\n")
@@ -29,13 +29,13 @@ def test_list_table_cli_exit_zero():
         f.write(LIST_TABLE_MD)
         path = f.name
     try:
-        assert run((path, "--table-mode=compact", "--number")) == 0
+        assert run((path, "--table-mode=spaced", "--number")) == 0
     finally:
         os.unlink(path)
 
 
-def test_none_mode_escape_preserved():
-    """AC-003：none 模式转义保留不回退。"""
+def test_default_escape_preserved():
+    """AC-003：默认风格（spaced）转义保留不回退。"""
     md = "| a | b |\n| --- | --- |\n| x\\|y | z |\n"
     out = md_kx.text(md)
     assert "x\\|y" in out
@@ -43,9 +43,9 @@ def test_none_mode_escape_preserved():
 
 
 def test_table_modes_unchanged():
-    """AC-004：独立表格三态行为不变。"""
+    """AC-004：独立表格三种风格行为不变。"""
     md = "| a | b |\n| --- | --- |\n| 1 | 2 |\n"
-    for mode in ("none", "pad", "compact"):
+    for mode in ("compact", "spaced", "pad"):
         out = md_kx.text(md, options={"table_mode": mode})
         assert "|" in out
         assert md_kx.text(out, options={"table_mode": mode}) == out
@@ -62,8 +62,8 @@ def test_multiline_list_item_unchanged():
 def test_nested_table_in_list_kept():
     """列表内缩进嵌套表格保持列表内（守卫不误伤独立 table 子块）。"""
     md = "1. foo\n\n    | a | b |\n    | --- | --- |\n    | 1 | 2 |\n"
-    out = md_kx.text(md, options={"table_mode": "compact"})
-    assert is_md_equal(md, out, options={"table_mode": "compact"})
+    out = md_kx.text(md, options={"table_mode": "spaced"})
+    assert is_md_equal(md, out, options={"table_mode": "spaced"})
     # 表格行保持列表内缩进（非 0 缩进）
     assert out.split("\n")[2].startswith("   |")
 
