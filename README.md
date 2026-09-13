@@ -1,7 +1,7 @@
 <div align="center">
 
 [![Build Status](https://github.com/TuTouPower/md_kx/actions/workflows/tests.yaml/badge.svg?branch=main)](https://github.com/TuTouPower/md_kx/actions/workflows/tests.yaml)
-[![PyPI version](https://img.shields.io/pypi/v/md_kx)](https://pypi.org/project/md_kx)
+[![PyPI version](https://img.shields.io/pypi/v/md-kx)](https://pypi.org/project/md-kx)
 
 # ![md_kx](assets/logo.svg)
 
@@ -88,8 +88,8 @@ options:
   --check               do not apply changes to files
   --no-validate         do not validate that the rendered HTML is consistent
   --version             show program's version number and exit
-  --commit              print the git commit id this build was made from and
-                        exit
+  --commit              print the dev build commit id ("unknown" for PyPI
+                        builds) and exit
   --number              apply consecutive numbering to ordered lists
   --wrap {keep,no,INTEGER}
                         paragraph word wrap mode (default: keep)

@@ -228,7 +228,7 @@ def make_arg_parser(
     parser.add_argument(
         "--commit",
         action="store_true",
-        help="print the git commit id this build was made from and exit",
+        help='print the dev build commit id ("unknown" for PyPI builds) and exit',
     )
     parser.add_argument(
         "--number",
@@ -494,9 +494,12 @@ def get_plugin_version_str(dist_map: Mapping[str, tuple[str, list[str]]]) -> str
 def _build_commit() -> str:
     """Return the git commit id this build was made from.
 
-    The id is injected at build time by `scripts/update_global.sh` into
-    `md_kx/_build_meta.py` (a git-ignored generated file). A source tree
-    or editable install without that file reports "unknown".
+    For local development builds the id is injected by
+    `scripts/update_global.sh` into `md_kx/_build_meta.py` (a git-
+    ignored generated file). Builds published to PyPI from CI do not
+    inject it and report "unknown"; use `--version` to identify those. A
+    source tree or editable install without that file also reports
+    "unknown".
     """
     try:
         from md_kx import _build_meta

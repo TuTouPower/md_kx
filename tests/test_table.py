@@ -14,7 +14,9 @@ MODES = ("compact", "spaced", "pad")
 
 def test_default_mode_is_spaced():
     """AC-010：未指定风格时默认 spaced。"""
-    assert md_kx.text(TABLE_MD) == md_kx.text(TABLE_MD, options={"table_mode": "spaced"})
+    assert md_kx.text(TABLE_MD) == md_kx.text(
+        TABLE_MD, options={"table_mode": "spaced"}
+    )
 
 
 def test_compact_zero_padding():
@@ -135,7 +137,9 @@ def test_escaped_pipe_preserved():
 def test_empty_cells():
     """AC-007：空单元格 compact 相邻竖线、spaced 两侧各一空格、pad 按列宽补空格。"""
     md = "| a | |\n| --- | --- |\n| 1 | |\n"
-    assert md_kx.text(md, options={"table_mode": "compact"}) == "|a||\n|---|---|\n|1||\n"
+    assert (
+        md_kx.text(md, options={"table_mode": "compact"}) == "|a||\n|---|---|\n|1||\n"
+    )
     assert (
         md_kx.text(md, options={"table_mode": "spaced"})
         == "| a |  |\n| --- | --- |\n| 1 |  |\n"

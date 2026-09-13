@@ -676,7 +676,7 @@ def _table_aligns(node: RenderTreeNode) -> list[str]:
         if section.type == "thead":
             for tr in section.children:
                 for th in tr.children:
-                    style = th.attrs.get("style", "") if th.attrs else ""
+                    style = str(th.attrs.get("style", "")) if th.attrs else ""
                     if "text-align:center" in style:
                         aligns.append("center")
                     elif "text-align:right" in style:
@@ -693,8 +693,8 @@ def _table_aligns(node: RenderTreeNode) -> list[str]:
 def _align_marker(align: str, width: int) -> str:
     """Build a separator marker of the given total width (width >= 3).
 
-    Alignment colons are kept at their edge positions; the dashes stretch
-    to fill the width.
+    Alignment colons are kept at their edge positions; the dashes
+    stretch to fill the width.
     """
     if align == "center":
         return ":" + "-" * (width - 2) + ":"
@@ -725,7 +725,9 @@ def _min_marker_width(align: str) -> int:
     return 3
 
 
-def _separator_row(aligns: list[str], num_cols: int, widths: list[int] | None = None) -> list[str]:
+def _separator_row(
+    aligns: list[str], num_cols: int, widths: list[int] | None = None
+) -> list[str]:
     """Build the header separator cells with alignment colons.
 
     `widths=None` returns fixed-length markers; a `widths` list returns
