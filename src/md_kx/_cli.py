@@ -501,11 +501,13 @@ def _build_commit() -> str:
     source tree or editable install without that file also reports
     "unknown".
     """
+    import importlib
+
     try:
-        from md_kx import _build_meta
+        build_meta = importlib.import_module("md_kx._build_meta")
     except ImportError:
         return "unknown"
-    return getattr(_build_meta, "BUILD_COMMIT", "unknown")
+    return getattr(build_meta, "BUILD_COMMIT", "unknown")
 
 
 def get_source_file_and_line(obj: object) -> tuple[str, int]:

@@ -61,7 +61,7 @@ SPEC="md-kx"
 if [[ -n "$TARGET_VERSION" ]]; then
   SPEC="md-kx==$TARGET_VERSION"
 fi
-echo "[1/2] 从 PyPI 安装：$SPEC（uv tool install --reinstall）..."
+echo "[1/2] 从 PyPI 安装：${SPEC}（uv tool install --reinstall）..."
 uv tool install --reinstall "$SPEC"
 
 # 2. 验证
@@ -73,7 +73,7 @@ fi
 
 INSTALLED_VERSION="$(md_kx --version)"
 INSTALLED_COMMIT="$(md_kx --commit)"
-echo "已装：$INSTALLED_VERSION（PyPI 构建，无源码 commit，build commit=$INSTALLED_COMMIT）"
+echo "已装：${INSTALLED_VERSION}（PyPI 构建，无源码 commit，build commit=${INSTALLED_COMMIT}）"
 
 HELP="$(md_kx --help)"
 HELP_ONE="$(printf '%s' "$HELP" | tr '\n' ' ')"
@@ -114,4 +114,4 @@ if ! grep -rq "_min_marker_width" $PKG_DIR/renderer/_context.py; then
   exit 1
 fi
 
-echo "OK：全局 md_kx 已从 PyPI 更新（$INSTALLED_VERSION）"
+echo "OK：全局 md_kx 已从 PyPI 更新（${INSTALLED_VERSION}）"
