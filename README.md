@@ -24,8 +24,10 @@ Md_kx is a Unix-style command-line tool as well as a Python library.
 Install with [CommonMark](https://spec.commonmark.org/current/) support:
 
 ```bash
-pipx install md_kx
+uv tool install md-kx     # 或：pipx install md-kx
 ```
+
+The distribution is named `md-kx` (on PyPI); the installed command is `md_kx`.
 
 <!-- end installing -->
 

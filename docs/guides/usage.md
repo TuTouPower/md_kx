@@ -4,40 +4,72 @@ md_kx 是 CommonMark 合规的 Markdown 格式化器（fork 自 hukkin/mdformat�
 
 ## 安装
 
+包已发布到 PyPI：**发行名 `md-kx`**，安装后命令名为 **`md_kx`**（注意下划线）。要求 Python >= 3.10。
+
 ### 全局 CLI（推荐）
 
+用 [uv](https://docs.astral.sh/uv/) 或 [pipx](https://pipx.pypa.io/) 装成全局命令，互不污染项目环境：
+
 ```bash
-cd /home/karon/karson_ubuntu/md_kx
-uv tool install .
+uv tool install md-kx        # 或：pipx install md-kx
 ```
 
-安装后注册 `md_kx` 全局命令（`~/.local/bin`），任意目录可用：
+安装后注册 `md_kx` 全局命令（uv 默认 `~/.local/bin`），任意目录可用：
 
 ```bash
 md_kx --version   # → md_kx 1.0.0
 ```
 
-仓库更新后重装（**开发完成 → 全局更新**）：
+升级到 PyPI 上的最新版：
 
 ```bash
-bash scripts/update_global.sh
+uv tool upgrade md-kx        # 或：pipx upgrade md-kx
 ```
 
-脚本执行三步：重新打包（`uv build` → `dist/`）→ `uv tool install . --reinstall` 更新全局 → 自动验证（`--table-mode` 合法值与默认风格、行为冒烟、已装文件内容检查），任一项不符即失败退出。
+锁定/回退到指定版本：
+
+```bash
+uv tool install --reinstall md-kx==1.0.0
+```
+
+> `uv tool install` 默认不覆盖已装版本；升级用 `uv tool upgrade`，强制重装用 `--reinstall`。
+
+### 本仓库开发者的全局更新
+
+改完本仓代码、要更新全局 `md_kx` 时：
+
+```bash
+bash scripts/update_global.sh              # 从 PyPI 装最新版 + 自动验证
+bash scripts/update_global.sh --version 1.0.0   # 装指定版本
+```
+
+脚本执行两步：`uv tool install --reinstall md-kx` → 自动验证（`--table-mode` 合法值与默认风格、行为冒烟、已装文件内容检查），任一项不符即失败退出。
 
 > **场景区分**：
-> - **开发测试**：用仓库内 `.venv`（editable 安装，改动即时生效），不要跑本脚本。
-> - **开发完成 → 全局更新**：跑 `bash scripts/update_global.sh`。全局 `md_kx` 与仓库 `.venv` 是两个独立环境，改完代码必须重装全局才会生效。
 >
-> **注意**：重装必须用 `--reinstall`（implies `--refresh`），不能用 `--force`。`--force` 会命中 uv 构建缓存，装入旧代码——现象是 `md_kx --version` 显示旧版本号但修复不生效。脚本已内置该行为与验证门禁。
+> - **开发测试**：用仓库内 `.venv`（editable 安装，改动即时生效），不要跑本脚本。
+> - **开发完成 → 发布**：改版本 → 打 tag → CI 发布到 PyPI（见 `docs/blueprint/decisions.md` ADR 002）；发布后 `scripts/update_global.sh` 从 PyPI 更新全局，与仓库 `.venv` 是两个独立环境。
+>
+> 该脚本不再本地打包；全局命令只来自 PyPI 发布版，因此发布前必须先完成版本发布。
 
 ### 作为 Python 库
 
 ```bash
-uv run --with-requirements tests/requirements.txt python -c "import md_kx; md_kx.text('# hi')"
+pip install md-kx            # 或：uv add md-kx
 ```
 
-或 `pip install .` / 加入项目 `pyproject.toml` 依赖。
+```python
+import md_kx
+
+md_kx.text("# hi\n")
+```
+
+开发本仓库时用 editable 安装（改动即时生效）：
+
+```bash
+uv venv && uv pip install -e . -r tests/requirements.txt
+.venv/bin/python -c "import md_kx; print(md_kx.text('# hi'))"
+```
 
 ## CLI 用法
 
@@ -168,12 +200,12 @@ md_kx.file(
 
 ## pre-commit hook
 
-本仓库自带 pre-commit hook 元数据，接入其他仓库：
+本仓库自带 pre-commit hook 元数据，接入其他仓库（从 PyPI 安装，无需本地路径）：
 
 ```yaml
 repos:
-- repo: /home/karon/karson_ubuntu/md_kx
-  rev: <commit 或分支>
+- repo: https://github.com/TuTouPower/md_kx
+  rev: 1.0.0    # 固定 tag 或 commit
   hooks:
   - id: md_kx
     # 可选：附加插件依赖
@@ -181,7 +213,7 @@ repos:
     - md_kx-black
 ```
 
-> 注意：mdformat 的格式化风格可能随版本变化，建议 pin 依赖版本（`rev` 固定 commit 或 tag）。
+> 注意：格式化风格可能随版本变化，建议 pin 版本（`rev` 固定 commit 或 tag）。
 
 或本仓库内部直接使用：
 
