@@ -155,7 +155,7 @@ plugins = ["covdefaults"]
 
 
 [tool.mypy]
-exclude = "tests/repo_template/"
+exclude = "\\.repo_template/tests/"
 show_error_codes = true
 warn_unreachable = true
 warn_unused_ignores = true

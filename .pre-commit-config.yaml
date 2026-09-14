@@ -18,27 +18,27 @@ repos:
     - flake8-bugbear
     - flake8-builtins
     - flake8-comprehensions
-    exclude: ^(scripts/repo_template/|tests/repo_template/|\.claude/hooks/)
+    exclude: ^\.repo_template/
 - repo: https://github.com/MarcoGorelli/absolufy-imports
   rev: 1683a63d850e065495c05b771e4a20db010a58e7  # frozen: v0.3.1
   hooks:
   - id: absolufy-imports
-    exclude: ^(scripts/repo_template/|tests/repo_template/|\.claude/hooks/)
+    exclude: ^\.repo_template/
 - repo: https://github.com/PyCQA/isort
   rev: c8ab4a5b21bac924d106e3103dd7c979fdd0f9bc  # frozen: 6.0.1
   hooks:
   - id: isort
-    exclude: ^(scripts/repo_template/|tests/repo_template/|\.claude/hooks/)
+    exclude: ^\.repo_template/
 - repo: https://github.com/psf/black
   rev: 8a737e727ac5ab2f1d4cf5876720ed276dc8dc4b  # frozen: 25.1.0
   hooks:
   - id: black
-    exclude: ^(scripts/repo_template/|tests/repo_template/|\.claude/hooks/)
+    exclude: ^\.repo_template/
 - repo: https://github.com/hukkin/docformatter
   rev: ab802050e6e96aaaf7f917fcbc333bb74e2e57f7  # frozen: v1.4.2
   hooks:
   - id: docformatter
-    exclude: ^(scripts/repo_template/|tests/repo_template/|\.claude/hooks/)
+    exclude: ^\.repo_template/
 - repo: https://github.com/PyCQA/flake8
   rev: d93590f5be797aabb60e3b09f2f52dddb02f349f  # frozen: 7.3.0
   hooks:
